@@ -1,0 +1,76 @@
+{
+  "rows": [
+    {
+      "model": "Qwen_Qwen2.5-0.5B-Instruct",
+      "topic": "ai_regulation",
+      "visible_LORO_acc": 0.7333333333333334,
+      "activation_LORO_acc": 0.6083333333333333,
+      "best_layer": 22,
+      "n_runs": 24,
+      "n_samples_visible": 240,
+      "n_samples_activation": 240,
+      "n_policies": 3,
+      "chance": 0.3333333333333333
+    },
+    {
+      "model": "Qwen_Qwen2.5-0.5B-Instruct",
+      "topic": "remote_work",
+      "visible_LORO_acc": 0.6833333333333332,
+      "activation_LORO_acc": 0.5791666666666666,
+      "best_layer": 22,
+      "n_runs": 24,
+      "n_samples_visible": 240,
+      "n_samples_activation": 240,
+      "n_policies": 3,
+      "chance": 0.3333333333333333
+    },
+    {
+      "model": "Qwen_Qwen2.5-0.5B-Instruct",
+      "topic": "ubi",
+      "visible_LORO_acc": 0.3833333333333333,
+      "activation_LORO_acc": 0.3,
+      "best_layer": 0,
+      "n_runs": 6,
+      "n_samples_visible": 60,
+      "n_samples_activation": 60,
+      "n_policies": 3,
+      "chance": 0.3333333333333333
+    },
+    {
+      "model": "HuggingFaceTB_SmolLM2-1.7B-Instruct",
+      "topic": "ai_regulation",
+      "visible_LORO_acc": 0.6749999999999999,
+      "activation_LORO_acc": 0.6458333333333334,
+      "best_layer": 16,
+      "n_runs": 24,
+      "n_samples_visible": 240,
+      "n_samples_activation": 240,
+      "n_policies": 3,
+      "chance": 0.3333333333333333
+    },
+    {
+      "model": "HuggingFaceTB_SmolLM2-1.7B-Instruct",
+      "topic": "remote_work",
+      "visible_LORO_acc": 0.7083333333333334,
+      "activation_LORO_acc": 0.6375000000000001,
+      "best_layer": 20,
+      "n_runs": 24,
+      "n_samples_visible": 240,
+      "n_samples_activation": 240,
+      "n_policies": 3,
+      "chance": 0.3333333333333333
+    },
+    {
+      "model": "HuggingFaceTB_SmolLM2-1.7B-Instruct",
+      "topic": "ubi",
+      "visible_LORO_acc": 0.6833333333333335,
+      "activation_LORO_acc": 0.44999999999999996,
+      "best_layer": 6,
+      "n_runs": 6,
+      "n_samples_visible": 60,
+      "n_samples_activation": 60,
+      "n_policies": 3,
+      "chance": 0.3333333333333333
+    }
+  ]
+}

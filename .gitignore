@@ -1,0 +1,48 @@
+# Large local-only artifacts
+pod_pull/
+activations/
+activations_cuda/
+activations_smoketest/
+activations_test/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Build artifacts
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
+paper/paper.pdf
+
+# Hugging Face cache that ended up in workspace
+.cache/
+
+# Temp / scratch
+/tmp_*
+*.tmp
+
+# Claude Code session state
+.claude/
+
+# Repo-internal pull staging (already gitignored above as pod_pull/)
+# (kept here as a comment for clarity)

@@ -1,0 +1,194 @@
+[
+  {
+    "experiment": "modern_attack",
+    "model": "llama3.2:3b",
+    "base": {
+      "A": 0,
+      "B": 0,
+      "C": 20,
+      "null": 0
+    },
+    "heavy": {
+      "A": 1,
+      "B": 9,
+      "C": 10,
+      "null": 0
+    },
+    "C_base": 1.0,
+    "C_heavy": 0.5,
+    "fisher_C": 0.00043591979075850045,
+    "cramers_v": 0.5773502691896258,
+    "chi2_p": 0.0012726338013398079
+  },
+  {
+    "experiment": "modern_attack",
+    "model": "gemma4:e4b",
+    "base": {
+      "A": 0,
+      "B": 12,
+      "C": 8,
+      "null": 0
+    },
+    "heavy": {
+      "A": 0,
+      "B": 20,
+      "C": 0,
+      "null": 0
+    },
+    "C_base": 0.4,
+    "C_heavy": 0.0,
+    "fisher_C": 0.003276003276003276,
+    "cramers_v": 0.4375,
+    "chi2_p": 0.005657597815064359
+  },
+  {
+    "experiment": "modern_attack",
+    "model": "qwen3.5:2b",
+    "base": {
+      "A": 0,
+      "B": 20,
+      "C": 0,
+      "null": 0
+    },
+    "heavy": {
+      "A": 2,
+      "B": 18,
+      "C": 0,
+      "null": 0
+    },
+    "C_base": 0.0,
+    "C_heavy": 0.0,
+    "fisher_C": 1.0,
+    "cramers_v": 0.11470786693528089,
+    "chi2_p": 0.468159909854428
+  },
+  {
+    "experiment": "modern_attack",
+    "model": "qwen3.5:9b",
+    "base": {
+      "A": 0,
+      "B": 18,
+      "C": 2,
+      "null": 0
+    },
+    "heavy": {
+      "A": 0,
+      "B": 20,
+      "C": 0,
+      "null": 0
+    },
+    "C_base": 0.1,
+    "C_heavy": 0.0,
+    "fisher_C": 0.4871794871794873,
+    "cramers_v": 0.11470786693528089,
+    "chi2_p": 0.468159909854428
+  },
+  {
+    "experiment": "E1_anti_direction",
+    "model": "llama3.2:3b",
+    "base": {
+      "A": 0,
+      "B": 0,
+      "C": 20,
+      "null": 0
+    },
+    "heavy": {
+      "A": 0,
+      "B": 0,
+      "C": 20,
+      "null": 0
+    },
+    "C_base": 1.0,
+    "C_heavy": 1.0,
+    "fisher_C": 1.0,
+    "cramers_v": NaN,
+    "chi2_p": NaN
+  },
+  {
+    "experiment": "E2_gemma_pool",
+    "model": "llama3.2:3b",
+    "base": {
+      "A": 0,
+      "B": 0,
+      "C": 20,
+      "null": 0
+    },
+    "heavy": {
+      "A": 0,
+      "B": 19,
+      "C": 1,
+      "null": 0
+    },
+    "C_base": 1.0,
+    "C_heavy": 0.05,
+    "fisher_C": 3.0468667118084345e-10,
+    "cramers_v": 0.901127113779166,
+    "chi2_p": 1.2035097922988484e-08,
+    "balanced": {
+      "A": 0,
+      "B": 7,
+      "C": 13,
+      "null": 0
+    },
+    "disclosed": {
+      "A": 0,
+      "B": 11,
+      "C": 9,
+      "null": 0
+    },
+    "C_balanced": 0.65,
+    "C_disclosed": 0.45,
+    "fisher_C_heavy_vs_balanced": 0.00013695564307355187,
+    "fisher_C_heavy_vs_disclosed": 0.00836173416818578
+  },
+  {
+    "experiment": "E3_dose_response",
+    "counts": {
+      "dose0": {
+        "A": 0,
+        "B": 0,
+        "C": 20,
+        "null": 0
+      },
+      "dose1": {
+        "A": 0,
+        "B": 0,
+        "C": 20,
+        "null": 0
+      },
+      "dose2": {
+        "A": 0,
+        "B": 2,
+        "C": 18,
+        "null": 0
+      },
+      "dose3": {
+        "A": 0,
+        "B": 2,
+        "C": 18,
+        "null": 0
+      },
+      "dose4": {
+        "A": 0,
+        "B": 4,
+        "C": 16,
+        "null": 0
+      },
+      "dose5": {
+        "A": 0,
+        "B": 7,
+        "C": 13,
+        "null": 0
+      }
+    },
+    "chi2_p": 0.006220905088461311,
+    "C_rates": {
+      "dose0": 1.0,
+      "dose1": 1.0,
+      "dose2": 0.9,
+      "dose3": 0.9,
+      "dose4": 0.8,
+      "dose5": 0.65
+    }
+  }
+]

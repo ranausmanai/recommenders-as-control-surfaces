@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+title: "Recommenders as Control Surfaces for LLM Agents: Adversarial Feed Injection, Model Regimes, and Simple Defenses"
+message: "If you use this work, please cite it as below."
+type: software
+authors:
+  - family-names: "Rana"
+    given-names: "Muhammad Usman"
+    email: "usmanashrafrana@gmail.com"
+abstract: >
+  We study whether the choice of feed-ranking algorithm consumed by an LLM
+  agent during a multi-turn exposure phase can steer the agent's downstream
+  decisions, holding model, persona, topic, and final prompt fixed. Across
+  2,465 decision rollouts and four modern open instruct LLMs from three labs,
+  we find that adversarial post injection produces statistically significant
+  decision shifts in two of four model families (Llama 3.2-3B, Gemma 4-e4b),
+  replicates with a generator-swap, follows a dose-response curve, is
+  directionally asymmetric to the model's default, and yields to two simple
+  feed-level defenses. We further document a methodological warning:
+  standard random-CV activation probing overstates "hidden mechanism" claims
+  in multi-turn agent settings.
+keywords:
+  - large language models
+  - agentic AI
+  - adversarial attacks
+  - prompt injection
+  - recommender systems
+  - AI safety
+  - feed manipulation
+license: MIT
+url: "https://github.com/ranausmanai/recommenders-as-control-surfaces"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Rana"
+      given-names: "Muhammad Usman"
+  title: "Recommenders as Control Surfaces for LLM Agents: Adversarial Feed Injection, Model Regimes, and Simple Defenses"
+  year: 2026
+  # Once the arXiv number is assigned, populate:
+  # journal: "arXiv preprint"
+  # doi: "10.48550/arXiv.XXXX.XXXXX"

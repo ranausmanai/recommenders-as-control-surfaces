@@ -1,0 +1,20 @@
+{
+  "best_layer": 15,
+  "per_topic": {
+    "remote_work": {
+      "cosine": 0.03193202320127152,
+      "cosine_abs": 0.03193202320127152,
+      "n_samples": 135
+    },
+    "ai_regulation": {
+      "cosine": 0.04160364108111937,
+      "cosine_abs": 0.04160364108111937,
+      "n_samples": 135
+    },
+    "nuclear_energy": {
+      "cosine": -0.054837323430639816,
+      "cosine_abs": 0.054837323430639816,
+      "n_samples": 135
+    }
+  }
+}
