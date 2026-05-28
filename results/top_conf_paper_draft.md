@@ -211,36 +211,15 @@ The safety concern is especially relevant for agents connected to social platfor
 
 **Prompt sensitivity.** Earlier v1/v2 experiments showed that small changes to the final decision format can suppress or expose feed effects. This is a feature of agent evaluation, but it also means claims must be tied to the tested decision interface.
 
-## 8. Recommended Final Claim
+## 8. Conclusion
 
-The strongest defensible claim is:
+We have shown that adversarial ranked-feed exposure can significantly shift downstream decisions in susceptible modern LLM agents. The effect replicates across post generators, follows a monotonic dose-response curve, is asymmetric with respect to model defaults, and can be mitigated by simple feed-level defenses in the cleanest susceptible model. Other models exhibit saturated defaults, showing that susceptibility is model-specific rather than universal. The activation-level signal that originally motivated the project is largely visible-history mediated and is reported here as a methodological warning: in multi-turn LLM-agent settings, naive random-CV probing overstates the apparent "hidden mechanism" content of agent activations.
 
-> Adversarial ranked-feed exposure can significantly shift downstream decisions in susceptible modern LLM agents. The effect replicates across post generators, follows a dose-response curve, is asymmetric with respect to model defaults, and can be mitigated by simple feed-level defenses in the cleanest susceptible model. Other models exhibit saturated defaults, showing that susceptibility is model-specific rather than universal.
-
-Avoid claiming:
-
-- all LLM agents are vulnerable;
-- the attack always works;
-- activations contain a hidden mechanism beyond visible history;
-- defenses are universally effective.
-
-## 9. Suggested Paper Structure
-
-1. **Introduction:** ranked feeds as agent control surfaces.
-2. **Threat model:** adversarial post injection before downstream decisions.
-3. **Protocol:** feed exposure, reaction history, forced-choice decision.
-4. **Main attack results:** Llama and Gemma significant; Qwen saturated.
-5. **Robustness:** generator swap.
-6. **Mechanism shape:** dose-response and anti-direction asymmetry.
-7. **Defenses:** balanced feed and disclosure, strongest on Llama.
-8. **Methodological warning:** activation probes and random CV overclaim in multi-turn settings.
-9. **Limitations and process recommendations.**
-
-## 10. Opinionated Assessment
-
-This is now a real paper. The original activation-fingerprint framing was not strong enough after rigorous controls, but the adversarial feed-injection framing is much better. It has a clean safety threat model, significant modern-model effects, null models that support a regime taxonomy, a generator-swap replication, a dose-response curve, and defenses.
-
-For a top-conference submission, the paper should be written as an agent-safety and evaluation-methodology paper, not as a mechanistic interpretability paper. The activation work belongs in a "why naive probing misled us" section or appendix. The title-level contribution should be that recommender systems are a practical control surface for LLM agents.
+The title-level contribution is that recommender systems are a practical control surface for LLM agents.
 
 > *In an age of agentic AI, every recommender silently authors every reply. The question is no longer whether models behave well; the question is who controls what they read just before they answer.*
+
+## Reproducibility
+
+All code, post pools, and per-rollout decision logs are released alongside the paper. The four headline figures regenerate from the released JSONL files via the included script (`notebooks/11_paper_figures.py`). The agent protocol uses standard HuggingFace Transformers and Ollama, with no non-public models or APIs. Random seeds are recorded with every rollout.
 
