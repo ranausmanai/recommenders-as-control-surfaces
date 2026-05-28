@@ -136,7 +136,7 @@ The C-vs-non-C distribution differs across dose levels (chi-square p=0.0062). Th
 
 ### 3.4 Anti-Direction Attack Is a No-Op
 
-Llama 3.2-3B defaults to remote-first in the remote-work setting. When the adversarial pool is pro-remote rather than pro-RTO, every condition remains 20/20 remote-first. This asymmetry suggests the attack is not simply "more adversarial content causes instability." It matters whether injected content pushes against the model's default.
+Llama 3.2-3B defaults to remote-first in the remote-work setting. When the adversarial pool is pro-remote rather than pro-RTO, every condition remains 20/20 remote-first. This default-direction asymmetry suggests the attack is not simply "more adversarial content causes instability." It matters whether injected content pushes against the model's default.
 
 This is useful for threat modeling. Attacks aligned with a model's existing default may be invisible because the output does not change; attacks opposing the default reveal susceptibility.
 
