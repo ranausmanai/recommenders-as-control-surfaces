@@ -32,7 +32,7 @@ Thumbs.db
 *.out
 *.toc
 *.synctex.gz
-paper/paper.pdf
+# (we DO want the rendered paper.pdf and paper.html in the repo for readers)
 
 # Hugging Face cache that ended up in workspace
 .cache/
