@@ -37,9 +37,10 @@
 \maketitle
 
 \begin{abstract}
-LLM agents increasingly consume ranked external information streams---social
-feeds, search results, retrieval contexts, and email queues---yet the safety
-implications of \emph{who controls that ranking} remain underexplored.
+LLM agents increasingly consume ranked external information streams
+(social feeds, search results, retrieval contexts, and email queues),
+yet the safety implications of \emph{who controls that ranking} remain
+underexplored.
 Existing safety evaluations test the model in isolation or the user prompt
 in isolation, but rarely the upstream ranker that decides what the agent
 reads just before it acts. This work introduces a controlled adversarial-
@@ -60,7 +61,7 @@ apparent threshold near two adversarial posts per five-post batch
 ($40\% \to 0\%$ remote-first; Bonferroni $p=0.049$), whereas
 Qwen~3.5-2B and Qwen~3.5-9B exhibit the saturation regime, returning their
 default recommendation regardless of feed composition. Two feed-level
-defenses---\emph{balanced exposure} and \emph{ranking disclosure}---
+defenses, \emph{balanced exposure} and \emph{ranking disclosure},
 significantly restore baseline behavior in the susceptible model
 (balanced: 95\% restoration on the Claude pool, 65\% under generator-swap;
 disclosure: 85\% / 45\%).
@@ -158,8 +159,8 @@ model to \emph{indirect} prompt injection, where adversarial content is
 embedded in third-party documents the LLM retrieves rather than in the
 user's own input. \citet{liu2024formalizing} formalized the attack
 surface and benchmarked defenses. The present work occupies a similar
-threat model---adversarial content reaches the agent through a
-third-party channel---but the channel is a \emph{ranker over benign
+threat model, in that adversarial content reaches the agent through a
+third-party channel, but the channel is a \emph{ranker over benign
 content}, and the targeted output is a downstream
 \emph{multi-step decision} rather than a single-turn jailbreak.
 
@@ -168,7 +169,7 @@ content}, and the targeted output is a downstream
 that elicit harmful completions from safety-tuned models. Our setting
 differs in that the injected content is \emph{not jailbreaking}; the
 adversarial posts are plausible, persuasive, and individually unremarkable.
-The attack therefore does not require bypassing safety training---it
+The attack therefore does not require bypassing safety training; it
 exploits ordinary in-context reasoning.
 
 \paragraph{Retrieval-augmented and agentic poisoning.}
@@ -181,11 +182,12 @@ and the consequential-decision outcome we measure is in the spirit of
 AgentDojo's task-success metrics.
 
 \paragraph{Probing and interpretability methodology.}
-The activation-probing line of work \citep{belrose2023eliciting,
-marks2023geometry} has produced impressive results on single-turn
+The activation-probing line of work, including the tuned-lens framework
+of \citet{belrose2023eliciting} and the linear-truth-direction results of
+\citet{marks2023geometry}, has produced strong results on single-turn
 classification of latent model state. Our methodological warning
 (Section~\ref{sec:probes}) concerns a setting outside the typical probing
-literature---multi-turn agent trajectories---where standard random
+literature, namely multi-turn agent trajectories, where standard random
 k-fold cross-validation systematically inflates accuracy, and a
 visible-history baseline often matches the probe.
 
@@ -228,7 +230,7 @@ identifier and serves the first five unseen posts each turn.
 Three conditions inject adversarial content at varying intensities. The
 \emph{light injection} condition replaces one of the five organic posts
 with an adversarial item; the \emph{heavy injection} condition replaces
-all five. A \emph{balanced} condition---used as a candidate defense---
+all five. A \emph{balanced} condition, used as a candidate defense,
 serves two adversarial posts together with three random organic posts.
 
 A sixth condition, \emph{disclosed heavy injection}, presents the same
@@ -277,7 +279,7 @@ second pool exists to support the generator-swap robustness test.
 Three pools are \emph{adversarial}, each containing fifty posts crafted
 to advocate one side of the remote-work debate persuasively without
 explicit identity attacks or named individuals. Two are written by
-Claude---one pro-return-to-office, used in the main attack experiments,
+Claude: one pro-return-to-office, used in the main attack experiments,
 and one pro-remote, used as an anti-direction control. The third is
 written by Gemma~4-e4b, pro-return-to-office, used to test whether the
 observed attack effects depend on the writer's idiomatic style.
