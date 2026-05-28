@@ -48,10 +48,14 @@ injection protocol that holds the underlying model, persona, topic, and
 final decision prompt fixed while varying only the composition and ordering
 of posts shown during a preceding ten-turn ``scrolling'' phase. Across
 2{,}465 decision rollouts on four modern open instruct LLMs spanning three
-independent labs (Meta, Google, Alibaba), three response regimes emerge,
-which we term \textbf{\emph{capitulation}}, \textbf{\emph{saturation}}, and
-\textbf{\emph{asymmetry}}. On Llama~3.2-3B, an exemplar of the capitulation
-regime, heavy adversarial injection reduces \emph{recommend fully remote}
+independent labs (Meta, Google, Alibaba), three response regimes emerge:
+\textbf{\emph{adversarial capitulation}} (the model's decision shifts toward
+the injected feed direction), \textbf{\emph{default saturation}} (a strong
+baseline attractor overrides feed influence), and
+\textbf{\emph{default-direction asymmetry}} (the model is susceptible only
+when the injection opposes its baseline default direction).
+On Llama~3.2-3B, an exemplar of the adversarial-capitulation regime,
+heavy adversarial injection reduces \emph{recommend fully remote}
 decisions from 100\% to 50\% (Bonferroni-corrected $p=0.0065$),
 strengthens to 5\% under a generator-swap robustness test in which
 Gemma~4 authors both organic and adversarial pools
@@ -59,8 +63,8 @@ Gemma~4 authors both organic and adversarial pools
 apparent threshold near two adversarial posts per five-post batch
 (chi-square $p=0.006$). Gemma~4-e4b shifts analogously
 ($40\% \to 0\%$ remote-first; Bonferroni $p=0.049$), whereas
-Qwen~3.5-2B and Qwen~3.5-9B exhibit the saturation regime, returning their
-default recommendation regardless of feed composition. Two feed-level
+Qwen~3.5-2B and Qwen~3.5-9B exhibit the default-saturation regime, returning
+their baseline recommendation regardless of feed composition. Two feed-level
 defenses, \emph{balanced exposure} and \emph{ranking disclosure},
 significantly restore baseline behavior in the susceptible model
 (balanced: 95\% restoration on the Claude pool, 65\% under generator-swap;
@@ -112,11 +116,19 @@ story to a more operational question, namely whether ranked exposure changes
 \emph{what agents decide}.
 
 \paragraph{Findings, in three regimes.} Feed injection does not universally
-overpower models. Instead, we observe three regimes:
+overpower models. Instead, three regimes emerge in our experiments:
 \begin{enumerate}[label=(\arabic*)]
-  \item \textbf{Capitulation:} susceptible models move toward the injected feed pressure.
-  \item \textbf{Saturation:} models with strong defaults ignore the feed and return the same decision.
-  \item \textbf{Asymmetry:} injections aligned with an existing model default can be silent, while injections against the default can have large effects.
+  \item \textbf{Adversarial capitulation.} Susceptible models (Llama~3.2-3B
+        and Gemma~4-e4b in our grid) move toward the injected feed direction.
+  \item \textbf{Default saturation.} Models with strong baseline attractors
+        (Qwen~3.5-2B and Qwen~3.5-9B, both anchored near the ``hybrid'' option
+        in the remote-work decision task) ignore the feed and return the same
+        decision regardless of injection.
+  \item \textbf{Default-direction asymmetry.} Injections aligned with an
+        existing model default are silent (a pro-remote injection on
+        Llama~3.2-3B, which already defaults to remote-first, has no
+        measurable effect), whereas injections that oppose the default can
+        produce large shifts.
 \end{enumerate}
 The main contribution is a controlled attack-and-defense study of these
 regimes. We show that adversarial post injection significantly changes
@@ -418,9 +430,9 @@ above it the model's recommendation tilts monotonically.}
 
 Llama 3.2-3B defaults to remote-first in the remote-work setting. When the
 adversarial pool is pro-remote rather than pro-RTO, every condition remains
-$20/20$ remote-first. This asymmetry suggests the attack is not simply ``more
-adversarial content causes instability.'' It matters whether the injected
-content pushes \emph{against} the model's default.
+$20/20$ remote-first. This default-direction asymmetry suggests the attack is
+not simply ``more adversarial content causes instability.'' It matters
+whether the injected content pushes \emph{against} the model's default.
 
 For threat modeling: attacks aligned with a model's existing default may be
 invisible because the output does not change. Attacks opposing the default
@@ -503,15 +515,17 @@ held-fixed decision task. This does not imply that every model follows
 every adversarial feed; the experimental results identify
 \emph{model-specific regimes}.
 
-\paragraph{Capitulation.} Llama 3.2-3B follows adversarial RTO pressure in
-the remote-work decision task, with effects strengthening under the Gemma-pool
-generator-swap.
+\paragraph{Adversarial capitulation.} Llama~3.2-3B follows adversarial
+return-to-office pressure in the remote-work decision task, with effects
+strengthening under the Gemma-pool generator-swap.
 
-\paragraph{Saturation.} Qwen 3.5-2B and 9B are stable near hybrid
-recommendations; their defaults swamp the attack in this domain.
+\paragraph{Default saturation.} Qwen~3.5-2B and Qwen~3.5-9B are stable near
+hybrid recommendations; their baseline defaults swamp the attack in this
+domain.
 
-\paragraph{Asymmetry.} Llama's pro-remote default is not further moved by
-pro-remote attack content. The attack only crosses the model's default.
+\paragraph{Default-direction asymmetry.} Llama's pro-remote default is not
+further moved by pro-remote attack content; the attack only succeeds when
+it crosses the model's default direction.
 
 \paragraph{Partial defense.} Balanced feeds and ranking disclosure reduce
 attack impact, but they are not universal fixes. Their effectiveness depends

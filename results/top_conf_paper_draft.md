@@ -2,7 +2,7 @@
 
 ## Abstract
 
-LLM agents increasingly consume ranked external information streams (social feeds, search results, retrieval contexts, and email queues), yet the safety implications of *who controls that ranking* remain underexplored. Existing safety evaluations test the model in isolation or the user prompt in isolation, but rarely the upstream ranker that decides what the agent reads just before it acts. This work introduces a controlled adversarial-injection protocol that holds the underlying model, persona, topic, and final decision prompt fixed while varying only the composition and ordering of posts shown during a preceding ten-turn "scrolling" phase. Across 2,465 decision rollouts on four modern open instruct LLMs spanning three independent labs (Meta, Google, Alibaba), three response regimes emerge, which we term ***capitulation***, ***saturation***, and ***asymmetry***. On Llama 3.2-3B, an exemplar of the capitulation regime, heavy adversarial injection reduces *recommend fully remote* decisions from 100% to 50% (Bonferroni-corrected p = 0.0065), strengthens to 5% under a generator-swap robustness test in which Gemma 4 authors both organic and adversarial pools (p = 3 × 10⁻¹⁰), and follows a monotonic dose-response with an apparent threshold near two adversarial posts per five-post batch (chi-square p = 0.006). Gemma 4-e4b shifts analogously (40% → 0% remote-first; Bonferroni p = 0.049), whereas Qwen 3.5-2B and Qwen 3.5-9B exhibit the saturation regime, returning their default recommendation regardless of feed composition. Two feed-level defenses, *balanced exposure* and *ranking disclosure*, significantly restore baseline behavior in the susceptible model (balanced: 95% restoration on the Claude pool, 65% under generator-swap; disclosure: 85% / 45%).
+LLM agents increasingly consume ranked external information streams (social feeds, search results, retrieval contexts, and email queues), yet the safety implications of *who controls that ranking* remain underexplored. Existing safety evaluations test the model in isolation or the user prompt in isolation, but rarely the upstream ranker that decides what the agent reads just before it acts. This work introduces a controlled adversarial-injection protocol that holds the underlying model, persona, topic, and final decision prompt fixed while varying only the composition and ordering of posts shown during a preceding ten-turn "scrolling" phase. Across 2,465 decision rollouts on four modern open instruct LLMs spanning three independent labs (Meta, Google, Alibaba), three response regimes emerge: ***adversarial capitulation*** (the model's decision shifts toward the injected feed direction), ***default saturation*** (a strong baseline attractor overrides feed influence), and ***default-direction asymmetry*** (the model is susceptible only when the injection opposes its baseline default direction). On Llama 3.2-3B, an exemplar of the adversarial-capitulation regime, heavy adversarial injection reduces *recommend fully remote* decisions from 100% to 50% (Bonferroni-corrected p = 0.0065), strengthens to 5% under a generator-swap robustness test in which Gemma 4 authors both organic and adversarial pools (p = 3 × 10⁻¹⁰), and follows a monotonic dose-response with an apparent threshold near two adversarial posts per five-post batch (chi-square p = 0.006). Gemma 4-e4b shifts analogously (40% → 0% remote-first; Bonferroni p = 0.049), whereas Qwen 3.5-2B and Qwen 3.5-9B exhibit the default-saturation regime, returning their baseline recommendation regardless of feed composition. Two feed-level defenses, *balanced exposure* and *ranking disclosure*, significantly restore baseline behavior in the susceptible model (balanced: 95% restoration on the Claude pool, 65% under generator-swap; disclosure: 85% / 45%).
 
 **Contributions.** This paper makes three contributions:
 (i) the **three-regime taxonomy** of feed-injection susceptibility in modern instruct LLMs;
@@ -19,11 +19,11 @@ This paper asks a direct question: can a feed ranker steer an LLM agent's conseq
 
 Our initial experiments began as a mechanistic probing study. Linear probes could recover feed policy from residual-stream activations at high accuracy under random turn-level cross-validation. However, group-aware evaluation and visible-history baselines showed that this framing was overclaimed: naive CV inflated probe accuracy, and much of the activation signal was recoverable from visible conversation history. That failure is scientifically useful. It redirected the project from a hidden-representation story to a more operational question: whether ranked exposure changes what agents decide.
 
-The answer is nuanced but important. Feed injection does not universally overpower models. Instead, we observe three regimes:
+The answer is nuanced but important. Feed injection does not universally overpower models. Instead, three regimes emerge in our experiments:
 
-1. **Capitulation:** susceptible models move toward the injected feed pressure.
-2. **Saturation:** models with strong defaults ignore the feed and return the same decision.
-3. **Asymmetry / reactance:** injections aligned with an existing model default can be silent, while injections against the default can have large effects.
+1. **Adversarial capitulation.** Susceptible models (Llama 3.2-3B and Gemma 4-e4b in our grid) move toward the injected feed direction.
+2. **Default saturation.** Models with strong baseline attractors (Qwen 3.5-2B and Qwen 3.5-9B, both anchored near the "hybrid" option in the remote-work decision task) ignore the feed and return the same decision regardless of injection.
+3. **Default-direction asymmetry.** Injections aligned with an existing model default are silent (a pro-remote injection on Llama 3.2-3B, which already defaults to remote-first, has no measurable effect), whereas injections that oppose the default can produce large shifts.
 
 The main contribution is a controlled attack-and-defense study of these regimes. We show that adversarial post injection significantly changes downstream decisions in Llama 3.2-3B and Gemma 4-e4b, replicates under a post-generator swap, follows a dose-response curve, and can be mitigated by balanced exposure and ranking-disclosure defenses in the cleanest Llama setting.
 
@@ -167,11 +167,11 @@ This becomes a methodological contribution rather than the main result. The pape
 
 The strongest interpretation is practical and systems-oriented: ranked feeds function as control surfaces for LLM agents, in the sense that the choice of ranker measurably shifts the agent's downstream behavior on a held-fixed decision task. This does not imply that every model follows every adversarial feed; the experimental results identify *model-specific regimes*.
 
-**Capitulation.** Llama 3.2-3B follows adversarial RTO pressure in the remote-work decision task, especially under Gemma-generated adversarial posts.
+**Adversarial capitulation.** Llama 3.2-3B follows adversarial return-to-office pressure in the remote-work decision task, with effects strengthening under the Gemma-pool generator-swap.
 
-**Saturation.** Qwen 3.5-2B and Qwen 3.5-9B are stable near hybrid recommendations in this setting. Their defaults swamp the attack.
+**Default saturation.** Qwen 3.5-2B and Qwen 3.5-9B are stable near hybrid recommendations in this setting; their baseline defaults swamp the attack.
 
-**Asymmetry.** Llama's pro-remote default is not further moved by pro-remote attack content, but it can be moved away from remote-first by pro-RTO content.
+**Default-direction asymmetry.** Llama's pro-remote default is not further moved by pro-remote attack content; the attack only succeeds when it crosses the model's default direction.
 
 **Partial defense.** Balanced feeds and ranking disclosure can reduce attack impact, but they are not universal fixes. Their effectiveness depends on the model and pool.
 
