@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Rana Muhammad Usman" />
   <meta name="dcterms.date" content="2026-05-30" />
-  <title>Recommenders as Control Surfaces for LLM Agents: Adversarial Feed Injection, Model Regimes, and Simple Defenses</title>
+  <title>Adversarial Feeds Steer LLM Agent Decisions Against Their Defaults</title>
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -52,8 +52,8 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">Recommenders as Control Surfaces for LLM Agents:<br />
-Adversarial Feed Injection, Model Regimes, and Simple Defenses</h1>
+<h1 class="title">Adversarial Feeds Steer LLM Agent Decisions Against
+Their Defaults</h1>
 <p class="author">Rana Muhammad Usman<a href="#fn1" class="footnote-ref"
 id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p class="date">2026-05-30</p>
@@ -909,8 +909,10 @@ model-specific rather than universal. The activation-level signal that
 originally motivated the project is largely visible-history mediated and
 serves as a methodological warning: in multi-turn LLM-agent settings,
 naive random-CV probing overstates the “hidden mechanism” content.</p>
-<p>The title-level contribution is that recommender systems are a
-practical control surface for LLM agents.</p>
+<p>The central contribution is that recommender systems act as a
+practical control surface for LLM agents, and that this steering is
+bounded by the model’s default: a one-sided feed tips a movable decision
+but does not overwrite a firmly held one.</p>
 <blockquote>
 <p><em>In an age of agentic AI, every recommender silently authors every
 reply. The question is no longer whether models behave well; the
