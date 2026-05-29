@@ -104,26 +104,39 @@ def fig1_cross_model():
         atk_p.append(ap); atk_lo.append(alo); atk_hi.append(ahi)
         sig_marks.append(sig_marker(p))
 
-    x = np.arange(len(labels))
-    w = 0.38
-    fig, ax = plt.subplots(figsize=(8.5, 4.5))
-    b1 = ax.bar(x - w / 2, base_p, w, label="Organic random (baseline)",
-                yerr=[np.array(base_p) - np.array(base_lo), np.array(base_hi) - np.array(base_p)],
-                capsize=4, color="#5b8def", edgecolor="black", linewidth=0.4)
-    b2 = ax.bar(x + w / 2, atk_p, w, label="Heavy adversarial injection",
-                yerr=[np.array(atk_p) - np.array(atk_lo), np.array(atk_hi) - np.array(atk_p)],
-                capsize=4, color="#e25c5c", edgecolor="black", linewidth=0.4)
-    for i, sm in enumerate(sig_marks):
-        height = max(base_hi[i], atk_hi[i]) + 0.04
-        ax.text(x[i], height, sm, ha="center", va="bottom", fontsize=11, fontweight="bold")
-
-    ax.set_xticks(x); ax.set_xticklabels(labels)
-    ax.set_ylabel("Probability of recommending\n'fully remote' (95% CI)")
-    ax.set_ylim(0, 1.15)
+    # Dumbbell encoding: a 0% value is a visible dot on the zero line, not an
+    # invisible bar. Each model is a row; baseline dot -> heavy dot.
+    import matplotlib.lines as mlines
+    BLUE, RED = "#5b8def", "#e25c5c"
+    fig, ax = plt.subplots(figsize=(9, 4.3))
+    n = len(labels)
+    for i in range(n):
+        y = n - 1 - i  # first model on top
+        bp, ap = base_p[i], atk_p[i]
+        moved = sig_marks[i] != "n.s."
+        ax.plot([bp, ap], [y, y], "-", color=(RED if moved else "#b9bec7"),
+                lw=3.2, zorder=1, solid_capstyle="round")
+        ax.scatter(bp, y, s=110, color=BLUE, zorder=3)
+        ax.scatter(ap, y, s=120, color=RED, zorder=3)
+        if abs(ap - bp) < 0.04:
+            ax.text(bp, y + 0.18, f"{round(bp*100)}%", ha="center", va="bottom",
+                    fontsize=9, color="#2b3342")
+        else:
+            ax.text(bp, y + 0.19, f"{round(bp*100)}%", ha="center", va="bottom", fontsize=9, color=BLUE)
+            ax.text(ap, y + 0.19, f"{round(ap*100)}%", ha="center", va="bottom",
+                    fontsize=9, color=RED, fontweight="bold")
+        ax.text(1.04, y, sig_marks[i], ha="left", va="center", fontsize=10, fontweight="bold")
+    ax.set_yticks(range(n)); ax.set_yticklabels(list(reversed(labels)))
+    ax.set_ylim(-0.5, n - 0.4); ax.set_xlim(-0.05, 1.16)
+    ax.set_xticks([0, 0.5, 1.0]); ax.set_xticklabels(["0%", "50%", "100%"])
+    ax.set_xlabel("Probability of recommending 'fully remote'")
     ax.set_title("Adversarial feed injection shifts decisions in 2 of 4 modern LLMs (n=20 per cell)")
-    ax.axhline(0, color="black", linewidth=0.5)
-    ax.legend(loc="upper right")
-    ax.grid(axis="y", alpha=0.3)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.grid(axis="x", alpha=0.25)
+    legb = mlines.Line2D([], [], color=BLUE, marker="o", linestyle="None", markersize=10, label="Organic random (baseline)")
+    legr = mlines.Line2D([], [], color=RED, marker="o", linestyle="None", markersize=10, label="Heavy adversarial injection")
+    ax.legend(handles=[legb, legr], loc="center", bbox_to_anchor=(0.62, 0.30), frameon=True)
     fig.tight_layout()
     fig.savefig(FIGS / "paper_fig1_cross_model_attack.png")
     plt.close(fig)

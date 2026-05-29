@@ -47,7 +47,7 @@ reads just before it acts. This work introduces a controlled adversarial-
 injection protocol that holds the underlying model, persona, topic, and
 final decision prompt fixed while varying only the composition and ordering
 of posts shown during a preceding ten-turn ``scrolling'' phase. Across
-2{,}465 decision rollouts on four modern open instruct LLMs spanning three
+2{,}785 decision rollouts on four modern open instruct LLMs spanning three
 independent labs (Meta, Google, Alibaba), three response regimes emerge:
 \textbf{\emph{adversarial capitulation}} (the model's decision shifts toward
 the injected feed direction), \textbf{\emph{default saturation}} (a strong
@@ -64,20 +64,29 @@ apparent threshold near two adversarial posts per five-post batch
 (chi-square $p=0.006$). Gemma~4-e4b shifts analogously
 ($40\% \to 0\%$ remote-first; Bonferroni $p=0.049$), whereas
 Qwen~3.5-2B and Qwen~3.5-9B exhibit the default-saturation regime, returning
-their baseline recommendation regardless of feed composition. Two feed-level
+their baseline recommendation regardless of feed composition. The effect
+generalizes beyond remote work: across additional A/B/C decision tasks,
+including security decisions such as removing a production deployment approval
+gate or relaxing access controls, heavy injection significantly shifts the
+susceptible models toward the injected option whenever it opposes a movable
+default (Fisher $p$ as low as $3 \times 10^{-10}$), while leaving aligned or
+robustly held defaults unchanged. Two feed-level
 defenses, \emph{balanced exposure} and \emph{ranking disclosure},
 significantly restore baseline behavior in the susceptible model
 (balanced: 95\% restoration on the Claude pool, 65\% under generator-swap;
 disclosure: 85\% / 45\%).
 
-\paragraph{Contributions.} This paper makes three contributions:
+\paragraph{Contributions.} This paper makes four contributions:
 (i)~the \textbf{three-regime taxonomy} of feed-injection susceptibility in
 modern instruct LLMs;
-(ii)~a \textbf{generator-swap-replicated} demonstration that ranked exposure
+(ii)~a \textbf{cross-task generalization} showing the attack moves
+consequential decisions across multiple independent domains and two model
+families;
+(iii)~a \textbf{generator-swap-replicated} demonstration that ranked exposure
 shifts downstream agent decisions with effect sizes that survive
 multiple-comparison correction, accompanied by a dose-response
 characterization and two feed-level defenses;
-and (iii)~a \textbf{methodological warning} that random-CV activation
+and (iv)~a \textbf{methodological warning} that random-CV activation
 probing overstates ``hidden mechanism'' claims in multi-turn agent settings
 by 30+ percentage points relative to group-aware evaluation with a
 visible-history baseline.
@@ -145,6 +154,10 @@ setting.
         labs} (Meta, Google, Alibaba), showing significant decision shifts in
         two of four (Llama 3.2, Gemma 4) and saturated nulls in two
         (Qwen 3.5-2B, Qwen 3.5-9B).
+  \item \textbf{Cross-task generalization}: the attack significantly shifts
+        decisions on multiple additional A/B/C tasks (including security
+        decisions) across two model families, confirming the effect is not
+        specific to one decision domain.
   \item \textbf{Generator-swap replication}: regenerating both organic and
         adversarial post pools with a different LLM (Gemma 4) yields a
         \emph{stronger} attack ($p = 3 \times 10^{-10}$), ruling out the
@@ -409,9 +422,10 @@ $4/5$ & $80\%$  \\
 $5/5$ & $65\%$  \\
 \bottomrule
 \end{tabular}
-\caption{Dose-response on Llama 3.2-3B. The full distribution across all six
-dose levels differs significantly ($\chi^2$ across A/B/C $\times$ 6 doses,
-$p = 0.006$).}
+\caption{Dose-response on Llama 3.2-3B. The choice distribution shifts
+significantly across the six dose levels (Pearson $\chi^2$ on the
+recommend-remote vs not-remote split $\times$ 6 doses, $p = 0.006$;
+the full-RTO option is never selected here).}
 \label{tab:dose}
 \end{table}
 
@@ -436,15 +450,90 @@ whether the injected content pushes \emph{against} the model's default.
 
 For threat modeling: attacks aligned with a model's existing default may be
 invisible because the output does not change. Attacks opposing the default
-reveal susceptibility.
+reveal susceptibility. The security implication is concrete: where an agent's
+safe default is to recommend the cautious option, an adversary who controls
+upstream ranking can erode that default toward a riskier choice, and can do so
+using only benign-looking content that no input-scanning filter would flag.
+
+\subsection{Generalization across decision tasks}
+\label{sec:generalization}
+
+To test whether the effect is specific to the remote-work setting, we applied
+the identical protocol (same six-condition feed construction, $n=20$ seeds) to
+additional forced-choice A/B/C decision tasks. Three \emph{core} tasks were run
+on both susceptible models: removing a production deployment approval gate,
+relaxing mandatory MFA and least-privilege access controls (two security
+decisions), and implementing universal basic income (a policy decision). We
+additionally ran two \emph{boundary-probe} tasks on Llama, deliberately chosen
+as cases where Section~\ref{sec:asymmetry} predicts the attack should
+\emph{fail}: deregulating AI, a direction Llama already favors by default, and
+adopting a risky third-party dependency, where Llama holds a firm safe default.
+For each task the adversarial pool advocates one designated option (the
+\emph{target}); we report the probability that the agent selects that target
+under organic baseline versus heavy injection
+(Table~\ref{tab:generalization}, Figure~\ref{fig:generalization}).
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{llcccr}
+\toprule
+Model & Task & Tgt. & Base & Heavy & Fisher $p$ \\
+\midrule
+\multicolumn{6}{l}{\textit{Core tasks (run on both models)}} \\
+Llama 3.2-3B & UBI           & A & $5\%$  & $100\%$ & $3{\times}10^{-10}$ \\
+Gemma 4-e4b  & UBI           & A & $0\%$  & $95\%$  & $3{\times}10^{-10}$ \\
+Llama 3.2-3B & deploy gate   & C & $55\%$ & $100\%$ & $0.0012$ \\
+Gemma 4-e4b  & deploy gate   & C & $0\%$  & $75\%$  & $8{\times}10^{-7}$ \\
+Llama 3.2-3B & access policy & C & $15\%$ & $100\%$ & $3{\times}10^{-8}$ \\
+Gemma 4-e4b  & access policy & C & $0\%$  & $0\%$   & n.s. \\
+\midrule
+\multicolumn{6}{l}{\textit{Boundary-probe controls (Llama, expected nulls)}} \\
+Llama 3.2-3B & vendor adopt  & C & $0\%$  & $0\%$   & n.s. \\
+Llama 3.2-3B & AI regulation & C & $90\%$ & $100\%$ & n.s. \\
+\bottomrule
+\end{tabular}
+\caption{Generalization across decision tasks. $P(\text{target})$ is the rate
+at which the agent selects the attacker-advocated option. Each cell is $n=20$.
+Every significant shift survives Bonferroni correction over the eight-test
+family ($\alpha=0.05/8$); ``n.s.'' marks the predicted non-movers.}
+\label{tab:generalization}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/paper_fig5_generalization.png}
+\caption{Attack generalization on the three core tasks run on both models.
+Each row shows $P(\text{attacker-target choice})$ moving from the organic
+baseline (blue) to heavy injection (red); $n=20$ per point, significance in
+Table~\ref{tab:generalization}. A point at $0\%$ is a measured zero, not a
+missing cell: on Gemma, UBI and the deploy gate jump from $0\%$, while access
+policy stays at $0\%$ (the default holds).}
+\label{fig:generalization}
+\end{figure}
+
+The attack generalizes. On the three core tasks, heavy injection significantly
+shifts the decision on all three for Llama, and UBI and the deployment gate
+replicate on Gemma, with effects as large as $p = 3\times10^{-10}$. Two of the
+three core tasks are security decisions, showing the manipulation is not
+confined to soft policy opinions. The non-movers confirm the principle of
+Section~\ref{sec:asymmetry} rather than contradict it: the two Llama
+boundary probes behaved exactly as predicted (AI regulation is already aligned
+with the model default, and vendor adoption is a robustly held safe default),
+and among the core tasks Gemma holds its access-control default firmly even
+though Llama does not. Susceptibility is therefore both \emph{task-dependent}
+and \emph{model-dependent}: the attack moves a decision when it opposes a
+movable default, and fails when the default is either already aligned or
+robustly held.
 
 \subsection{Simple defenses mitigate the attack}
 \label{sec:defenses}
 
 In Llama 3.2-3B with Claude-generated posts, heavy attack moves remote-first
 from $100\%$ to $50\%$. Balanced exposure restores it to $95\%$
-($p=0.0014$ vs heavy on C); ranking disclosure restores it to $85\%$
-($p=0.020$ vs heavy on C).
+($p=0.0033$ vs heavy on C); ranking disclosure restores it to $85\%$
+($p=0.041$ vs heavy on C). All defense comparisons use two-sided Fisher's
+exact tests, consistent with Table~\ref{tab:cross-model}.
 
 In the Gemma-generated pool, the attack is stronger
 ($100\% \to 5\%$). Balanced exposure restores remote-first to $65\%$
@@ -525,7 +614,15 @@ domain.
 
 \paragraph{Default-direction asymmetry.} Llama's pro-remote default is not
 further moved by pro-remote attack content; the attack only succeeds when
-it crosses the model's default direction.
+it crosses the model's default direction. The multi-task results
+(Section~\ref{sec:generalization}) confirm this as a general principle rather
+than a remote-work artifact: across eight model-task cells, every significant
+shift is one where the attack opposes a movable default, and every null is
+either an aligned attack (AI regulation) or a robustly held default (vendor
+adoption on Llama, access controls on Gemma). A one-sided feed does not
+overwrite a model's position; it tips a decision the model was already
+uncertain about, which makes the most contestable, highest-stakes decisions
+the most exposed.
 
 \paragraph{Partial defense.} Balanced feeds and ranking disclosure reduce
 attack impact, but they are not universal fixes. Their effectiveness depends
@@ -533,11 +630,12 @@ on the model and post pool.
 
 This is stronger than a ``feeds influence models'' platitude because the
 experiments isolate ranker-controlled exposure while holding the decision task
-fixed, include null models, include generator-swap replication, characterize
-dose-response, and test defenses.
+fixed, span multiple decision domains and two model families, include null
+models, include generator-swap replication, characterize dose-response, and
+test defenses.
 
 % ----------------------------------------------------------------------------
-\section{Why This Matters}
+\section{Implications}
 % ----------------------------------------------------------------------------
 
 The immediate implication is for agent evaluation. A benchmark that tests
@@ -568,8 +666,16 @@ the agent sees before it acts.
 % ----------------------------------------------------------------------------
 
 \begin{itemize}[leftmargin=*]
-  \item \textbf{Single strongest task domain.} The clearest modern-model
-        attack is on remote-work advice. More domains are needed.
+  \item \textbf{Effect is task- and model-dependent.} The attack is strongest
+        on contestable decisions with a movable default and fails where the
+        default is aligned or robustly held (for example, vendor adoption on
+        Llama and access controls on Gemma). The reported domains are realistic
+        but a broader, systematic task taxonomy is future work.
+  \item \textbf{Frontier-model boundary.} A preliminary probe found that a
+        frontier model retained its reasoned default under the identical attack
+        that moved the small open models, suggesting susceptibility is bounded
+        by model scale and alignment; systematic frontier evaluation is left to
+        future work.
   \item \textbf{Small per-cell sample size.} Most confirmatory cells use
         $n=20$ seeds. Effects are large enough to detect on Llama and Gemma,
         but additional seeds would tighten CIs.
@@ -622,8 +728,8 @@ who controls what they read just before they answer.}
 % ----------------------------------------------------------------------------
 
 All code, post pools, and per-rollout decision logs are released alongside
-the paper. The four headline figures regenerate from the released
-decision-rollout files via a single analysis script (see
+the paper. The five figures regenerate from the released
+decision-rollout files via the analysis scripts (see
 Appendix~\ref{app:identifiers} for the file map). The agent protocol uses
 standard HuggingFace Transformers and Ollama, with no gated weights and
 no non-public APIs. Random seeds are recorded with every rollout. The
@@ -683,14 +789,20 @@ File & Contents \\
 \end{tabular}
 \end{center}
 
-\paragraph{Rollout-record file layout.} The 2{,}465 decision rollouts are
+\paragraph{Rollout-record file layout.} The 2{,}785 decision rollouts are
 released under the Hugging Face dataset \texttt{ranausmans/feed-injection-rollouts}.
 The headline cross-model attack data resides in
 \texttt{decision\_shift\_adv\_modern.jsonl}; the generator-swap, anti-direction,
-and dose-response data resides in \texttt{decision\_shift\_followup.jsonl}.
+and dose-response data resides in \texttt{decision\_shift\_followup.jsonl}; and
+the cross-task generalization grid (Section~\ref{sec:generalization}) resides
+in \texttt{decision\_shift\_tasks.jsonl}. The generalization tasks also use
+additional organic and adversarial post pools
+(\texttt{pool\_<task>.jsonl}, \texttt{adversarial\_<task>.jsonl}) released in
+the same dataset repository.
 
-\paragraph{Analysis script.} The four paper figures regenerate from the
-JSONL files via \texttt{notebooks/11\_paper\_figures.py} in the
-companion GitHub repository.
+\paragraph{Analysis scripts.} Figures 1--4 regenerate from the JSONL files via
+\texttt{notebooks/11\_paper\_figures.py}, and the cross-task generalization
+figure via \texttt{notebooks/13\_task\_figure.py}, in the companion GitHub
+repository.
 
 \end{document}
