@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Rana Muhammad Usman" />
-  <meta name="dcterms.date" content="2026-05-30" />
+  <meta name="dcterms.date" content="2026-05-31" />
   <title>Adversarial Feeds Steer LLM Agent Decisions Against Their Defaults</title>
   <style>
     /* Default styles provided by pandoc.
@@ -56,124 +56,105 @@
 Their Defaults</h1>
 <p class="author">Rana Muhammad Usman<a href="#fn1" class="footnote-ref"
 id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<p class="date">2026-05-30</p>
+<p class="date">2026-05-31</p>
 <div class="abstract">
 <div class="abstract-title">Abstract</div>
-<p>LLM agents increasingly consume ranked external information streams
-(social feeds, search results, retrieval contexts, and email queues),
-yet the safety implications of <em>who controls that ranking</em> remain
-underexplored. Existing safety evaluations test the model in isolation
-or the user prompt in isolation, but rarely the upstream ranker that
-decides what the agent reads just before it acts. This work introduces a
-controlled adversarial- injection protocol that holds the underlying
-model, persona, topic, and final decision prompt fixed while varying
-only the composition and ordering of posts shown during a preceding
-ten-turn “scrolling” phase. Across 2<span>,</span>785 decision rollouts
-on four modern open instruct LLMs spanning three independent labs (Meta,
-Google, Alibaba), three response regimes emerge: <strong><em>adversarial
-capitulation</em></strong> (the model’s decision shifts toward the
-injected feed direction), <strong><em>default saturation</em></strong>
-(a strong baseline attractor overrides feed influence), and
-<strong><em>default-direction asymmetry</em></strong> (the model is
-susceptible only when the injection opposes its baseline default
-direction). On Llama 3.2-3B, an exemplar of the adversarial-capitulation
-regime, heavy adversarial injection reduces <em>recommend fully
-remote</em> decisions from 100% to 50% (Bonferroni-corrected <span
-class="math inline">\(p=0.0065\)</span>), strengthens to 5% under a
-generator-swap robustness test in which Gemma 4 authors both organic and
-adversarial pools (<span class="math inline">\(p = 3 \times
-10^{-10}\)</span>), and follows a monotonic dose-response with an
-apparent threshold near two adversarial posts per five-post batch
-(chi-square <span class="math inline">\(p=0.006\)</span>). Gemma 4-e4b
-shifts analogously (<span class="math inline">\(40\% \to 0\%\)</span>
-remote-first; Bonferroni <span class="math inline">\(p=0.049\)</span>),
-whereas Qwen 3.5-2B and Qwen 3.5-9B exhibit the default-saturation
-regime, returning their baseline recommendation regardless of feed
-composition. The effect generalizes beyond remote work: across
-additional A/B/C decision tasks, including security decisions such as
-removing a production deployment approval gate or relaxing access
-controls, heavy injection significantly shifts the susceptible models
-toward the injected option whenever it opposes a movable default (Fisher
-<span class="math inline">\(p\)</span> as low as <span
-class="math inline">\(3 \times 10^{-10}\)</span>), while leaving aligned
-or robustly held defaults unchanged. Two feed-level defenses,
-<em>balanced exposure</em> and <em>ranking disclosure</em>,
-significantly restore baseline behavior in the susceptible model
-(balanced: 95% restoration on the Claude pool, 65% under generator-swap;
-disclosure: 85% / 45%).</p>
-<h4 id="contributions.">Contributions.</h4>
-<p>This paper makes four contributions: (i) the <strong>three-regime
-taxonomy</strong> of feed-injection susceptibility in modern instruct
-LLMs; (ii) a <strong>cross-task generalization</strong> showing the
-attack moves consequential decisions across multiple independent domains
-and two model families; (iii) a
-<strong>generator-swap-replicated</strong> demonstration that ranked
-exposure shifts downstream agent decisions with effect sizes that
-survive multiple-comparison correction, accompanied by a dose-response
-characterization and two feed-level defenses; and (iv) a
-<strong>methodological warning</strong> that random-CV activation
-probing overstates “hidden mechanism” claims in multi-turn agent
-settings by 30+ percentage points relative to group-aware evaluation
-with a visible-history baseline.</p>
-<p><em>In an age of agentic AI, every recommender silently authors every
-reply. The question is no longer whether models behave well; the
-question is who controls what they read just before they
-answer.</em></p>
+<p>LLM agents increasingly act after consuming ranked external
+information streams such as social feeds, search results, retrieval
+contexts, and email queues, yet safety evaluations almost always test
+the model or the user prompt in isolation, never the upstream ranker
+that decides what the agent reads just before it acts. We introduce a
+controlled protocol that holds the model, persona, topic, and final
+decision prompt fixed and varies only the composition and ordering of
+the posts an agent encounters during a preceding ten-turn “scrolling”
+phase, isolating the causal effect of feed curation on a downstream
+forced-choice decision. Across thousands of decision rollouts on four
+modern open instruct LLMs from three independent labs, we identify three
+response regimes: adversarial capitulation, default saturation, and a
+default-direction asymmetry in which a one-sided feed tips a decision
+the model was genuinely uncertain about but cannot dislodge one it
+already favors or holds firmly. The effect follows a dose-response
+curve, survives a generator swap that rules out a writing-style
+artifact, generalizes across several decision domains including
+security-relevant choices, and is partly mitigated by two simple
+feed-level defenses. We characterize the recommender as a practical,
+default-bounded control surface for LLM agents, and argue that agent
+evaluations must audit the feed layer rather than the final prompt
+alone.</p>
 </div>
 </header>
 <h1 id="introduction">Introduction</h1>
 <p>LLM agents are rarely deployed in a vacuum. They browse, search,
-retrieve, subscribe, react, summarize, and make decisions after
-consuming ranked streams of information. A model’s downstream answer is
-therefore not only a function of its weights and the final user prompt;
-it is also a function of the information trajectory selected by upstream
-ranking systems.</p>
-<p>This paper asks a direct question:</p>
-<blockquote>
-<p>Can a feed ranker steer an LLM agent’s consequential decision while
-holding the base model, persona, topic, and final decision prompt
-fixed?</p>
-</blockquote>
-<h4 id="from-mechanistic-probing-to-decision-level-audit.">From
-mechanistic probing to decision-level audit.</h4>
-<p>Our experiments began as a mechanistic probing study. Linear probes
-could recover feed policy from residual-stream activations at high
-accuracy under random turn-level cross-validation. However, group-aware
-evaluation and visible-history baselines showed that this framing was
-overclaimed: naive CV inflated probe accuracy by 30+ percentage points,
-and much of the activation signal was recoverable from visible
-conversation history alone. That failure is scientifically useful: it
-redirected the project from a hidden-representation story to a more
-operational question, namely whether ranked exposure changes <em>what
-agents decide</em>.</p>
-<h4 id="findings-in-three-regimes.">Findings, in three regimes.</h4>
-<p>Feed injection does not universally overpower models. Instead, three
-regimes emerge in our experiments:</p>
-<ol>
-<li><p><strong>Adversarial capitulation.</strong> Susceptible models
-(Llama 3.2-3B and Gemma 4-e4b in our grid) move toward the injected feed
-direction.</p></li>
-<li><p><strong>Default saturation.</strong> Models with strong baseline
-attractors (Qwen 3.5-2B and Qwen 3.5-9B, both anchored near the “hybrid”
-option in the remote-work decision task) ignore the feed and return the
-same decision regardless of injection.</p></li>
-<li><p><strong>Default-direction asymmetry.</strong> Injections aligned
-with an existing model default are silent (a pro-remote injection on
-Llama 3.2-3B, which already defaults to remote-first, has no measurable
-effect), whereas injections that oppose the default can produce large
-shifts.</p></li>
-</ol>
-<p>The main contribution is a controlled attack-and-defense study of
-these regimes. We show that adversarial post injection significantly
-changes downstream decisions in Llama 3.2-3B and Gemma 4-e4b, replicates
-under a post-generator swap, follows a dose-response curve, and can be
-mitigated by balanced exposure and ranking-disclosure defenses in the
-cleanest susceptible setting.</p>
-<h4 id="contributions.-1">Contributions.</h4>
+retrieve, subscribe, summarize, and then make decisions after consuming
+ranked streams of information that an upstream system selected on their
+behalf. A deployed agent’s output is therefore not only a function of
+its weights and the user’s prompt, but also of the information
+trajectory a ranker chose for it. As agents are trusted with
+increasingly consequential actions, this exposes a safety question that
+current evaluation practice largely overlooks: not merely whether a
+model behaves well on a clean prompt, but whether a party who controls
+what the agent reads just before it acts can thereby control what it
+does.</p>
+<p>Research on adversarial inputs to LLMs has focused almost entirely on
+the content of individual messages. Direct prompt injection and
+jailbreaking craft a malicious instruction in the user turn <span
+class="citation" data-cites="perez2022ignore zou2023universal">(Perez
+and Ribeiro 2022; Zou et al. 2023)</span>; indirect prompt injection
+hides such an instruction inside a third-party document the agent later
+retrieves <span class="citation"
+data-cites="greshake2023more liu2024formalizing">(Greshake et al. 2023;
+Liu et al. 2024)</span>; and retrieval poisoning corrupts the documents
+a retrieval system returns <span class="citation"
+data-cites="zou2024poisonedrag">(Zou et al. 2024)</span>. These threats
+share a defining feature: an identifiable malicious payload, an
+instruction, a jailbreak string, or a doctored document, that a content
+filter could in principle catch. None addresses the case in which every
+individual item is benign and the manipulation lives entirely in which
+items are selected and in what proportion, and none asks whether such
+curation can steer a multi-step agent decision rather than flip a
+single-turn output.</p>
+<p>We study exactly that gap. We treat the ranker, the component that
+chooses which benign items an agent sees, as an attack surface in its
+own right, and we measure rather than assume its effect. Our protocol
+holds the model, persona, topic, and final decision prompt fixed and
+varies only the composition and ordering of the posts an agent reacts to
+during a ten-turn “scrolling” phase before it answers a forced-choice
+question. Because everything except the feed is held constant, any shift
+in the decision is attributable to feed curation alone. This isolates
+ranked exposure as a manipulation channel and lets us quantify how far,
+and under what conditions, it moves an agent.</p>
+<p>Feed injection does not overpower every model. Across four modern
+open instruct LLMs we observe three response regimes. Some models
+capitulate, shifting toward whichever direction the feed pushes. Others
+saturate, returning a fixed default no matter what they are shown. Most
+informative is a default-direction asymmetry: a one-sided feed reliably
+tips a decision the model was genuinely uncertain about, yet cannot
+dislodge one it already favors or holds firmly. The effect follows a
+clean dose-response curve, survives a generator swap in which a
+different model writes the posts, generalizes across several additional
+decision domains including security-relevant choices, and is partly
+reversed by two simple feed-level defenses.</p>
+<p>The study began as a mechanistic-probing project. Linear probes
+recovered the feed policy from residual-stream activations at high
+accuracy under random cross-validation, but group-aware evaluation and a
+visible-history baseline showed that framing to be overclaimed: naive
+cross-validation inflated probe accuracy by more than thirty percentage
+points, and much of the signal was recoverable from the visible
+conversation history alone. That negative result redirected the work
+from a hidden-representation story toward the operational question of
+what agents actually decide, and we report it as a methodological
+caution for anyone probing multi-turn agents.</p>
+<h4 id="contributions.">Contributions.</h4>
+<p>We make the following contributions:</p>
 <ul>
 <li><p>A <em>controlled adversarial-injection protocol</em> for
 LLM-agent feed exposure, with replicable post pools and
 decision-elicitation prompts.</p></li>
+<li><p>A <strong>three-regime taxonomy</strong> of feed-injection
+susceptibility, <em>adversarial capitulation</em>, <em>default
+saturation</em>, and a <em>default-direction asymmetry</em>, that
+characterizes when an agent is steerable by its feed and when it is
+not.</p></li>
 <li><p>Empirical results on <strong>four modern open instruct LLMs from
 three labs</strong> (Meta, Google, Alibaba), showing significant
 decision shifts in two of four (Llama 3.2, Gemma 4) and saturated nulls
@@ -200,78 +181,119 @@ group-aware splits combined with visible-history baselines are necessary
 controls.</p></li>
 </ul>
 <h1 id="related-work">Related Work</h1>
-<h4 id="prompt-injection-and-indirect-prompt-injection.">Prompt
-injection and indirect prompt injection.</h4>
+<h2 id="prompt-injection-and-indirect-prompt-injection">Prompt injection
+and indirect prompt injection</h2>
 <p>Direct prompt injection attacks on LLMs were first systematized by
 <span class="citation" data-cites="perez2022ignore">Perez and Ribeiro
 (2022)</span>. <span class="citation"
 data-cites="greshake2023more">Greshake et al. (2023)</span> extended the
-threat model to <em>indirect</em> prompt injection, where adversarial
-content is embedded in third-party documents the LLM retrieves rather
-than in the user’s own input. <span class="citation"
+threat model to <em>indirect</em> prompt injection, in which adversarial
+content is embedded in third-party documents the model retrieves rather
+than in the user’s own input, and <span class="citation"
 data-cites="liu2024formalizing">Liu et al. (2024)</span> formalized the
-attack surface and benchmarked defenses. The present work occupies a
-similar threat model, in that adversarial content reaches the agent
-through a third-party channel, but the channel is a <em>ranker over
-benign content</em>, and the targeted output is a downstream
-<em>multi-step decision</em> rather than a single-turn jailbreak.</p>
-<h4 id="adversarial-attacks-on-aligned-llms.">Adversarial attacks on
-aligned LLMs.</h4>
+attack surface and benchmarked defenses. More recently, <span
+class="citation" data-cites="zhan2024injecagent">Zhan et al.
+(2024)</span> built a benchmark of indirect injections against
+tool-using agents and found even strong models follow injected
+instructions a substantial fraction of the time. What unites this line
+of work is that the adversarial signal is an explicit instruction
+smuggled into the context: an imperative the model is tricked into
+obeying. Our threat model shares the third-party channel but removes the
+payload entirely. No item carries an instruction; the manipulation is
+the <em>selection</em> of otherwise benign content, and the target is a
+downstream multi-step decision rather than a single-turn jailbreak, so
+the defenses designed to detect injected instructions do not apply.</p>
+<h2 id="adversarial-attacks-and-agent-poisoning">Adversarial attacks and
+agent poisoning</h2>
 <p><span class="citation" data-cites="zou2023universal">Zou et al.
-(2023)</span> demonstrated universal transferable suffixes that elicit
-harmful completions from safety-tuned models. Our setting differs in
-that the injected content is <em>not jailbreaking</em>; the adversarial
-posts are plausible, persuasive, and individually unremarkable. The
-attack therefore does not require bypassing safety training; it exploits
-ordinary in-context reasoning.</p>
-<h4 id="retrieval-augmented-and-agentic-poisoning.">Retrieval-augmented
-and agentic poisoning.</h4>
-<p><span class="citation" data-cites="zou2024poisonedrag">Zou et al.
-(2024)</span> studied corruption of retrieval indices in
-retrieval-augmented generation pipelines. <span class="citation"
+(2023)</span> demonstrated universal, transferable adversarial suffixes
+that elicit harmful completions from safety-tuned models; <span
+class="citation" data-cites="zou2024poisonedrag">Zou et al.
+(2024)</span> corrupted the retrieval index of a retrieval-augmented
+pipeline; <span class="citation" data-cites="chen2024agentpoison">Chen
+et al. (2024)</span> backdoored an agent’s long-term memory or knowledge
+base with optimized triggers; and <span class="citation"
 data-cites="debenedetti2024agentdojo">Debenedetti et al. (2024)</span>
 introduced an environment for evaluating prompt injection against
-tool-using LLM agents. The present work is closely related to both:
-ranked-feed injection is the recommender-side analog of RAG poisoning,
-and the consequential-decision outcome we measure is in the spirit of
-AgentDojo’s task-success metrics.</p>
-<h4 id="probing-and-interpretability-methodology.">Probing and
-interpretability methodology.</h4>
-<p>The activation-probing line of work, including the tuned-lens
-framework of <span class="citation"
-data-cites="belrose2023eliciting">Belrose et al. (2023)</span> and the
-linear-truth-direction results of <span class="citation"
-data-cites="marks2023geometry">Marks and Tegmark (2023)</span>, has
-produced strong results on single-turn classification of latent model
-state. Our methodological warning (Section <a href="#sec:probes"
-data-reference-type="ref" data-reference="sec:probes">5</a>) concerns a
-setting outside the typical probing literature, namely multi-turn agent
-trajectories, where standard random k-fold cross-validation
-systematically inflates accuracy, and a visible-history baseline often
-matches the probe.</p>
-<h4 id="recommender-systems-and-behavioral-influence.">Recommender
-systems and behavioral influence.</h4>
-<p>The longer-running literature on algorithmic amplification and
-behavioral change in human users <span class="citation"
-data-cites="narayanan2023algorithmic">(Narayanan 2023)</span> provides
-the conceptual backdrop. The contribution here is that the
-<em>audience</em> of the recommender shifts from a human to an LLM
-agent, which changes both the threat model and the available
-defenses.</p>
-<h1 id="experimental-setup">Experimental Setup</h1>
+tool-using agents. These attacks are powerful but each depends on an
+artifact a defender can in principle target: an anomalous suffix, a
+poisoned document, or an optimized trigger. None studies the case in
+which every item is individually unremarkable and the attack vector is
+the ranker’s choice of which benign items to surface, which is precisely
+the surface a content scanner cannot see.</p>
+<h2 id="defenses-and-their-limits">Defenses and their limits</h2>
+<p>A leading defense direction trains models to respect an instruction
+hierarchy, prioritizing privileged system instructions over untrusted
+content <span class="citation"
+data-cites="wallace2024instruction">(Wallace et al. 2024)</span>.
+Subsequent work questions how far this holds: <span class="citation"
+data-cites="geng2025control">Geng et al. (2025)</span> show that the
+system/user separation fails to enforce a reliable hierarchy across
+state-of-the-art models, and <span class="citation"
+data-cites="zhan2025adaptive">Zhan et al. (2025)</span> break eight
+published defenses against indirect injection with adaptive attacks.
+These defenses, and the attacks that defeat them, are framed around
+injected instructions. Our attack carries none, so instruction-hierarchy
+defenses have nothing privileged to demote; the feed-level defenses we
+test instead operate on the composition of what is shown, not on
+detecting a malicious payload.</p>
+<h2 id="probing-and-interpretability-methodology">Probing and
+interpretability methodology</h2>
+<p>The activation-probing literature, including the tuned-lens framework
+of <span class="citation" data-cites="belrose2023eliciting">Belrose et
+al. (2023)</span> and the linear-truth-direction results of <span
+class="citation" data-cites="marks2023geometry">Marks and Tegmark
+(2023)</span>, has produced strong results on single-turn classification
+of latent model state. These methods are typically validated with random
+cross-validation on independent examples. We show (Section <a
+href="#sec:probes" data-reference-type="ref"
+data-reference="sec:probes">5</a>) that this validation is unsafe in
+multi-turn agent trajectories, where adjacent turns from the same
+rollout are highly correlated, random splits inflate accuracy, and a
+simple visible-history baseline often matches the probe.</p>
+<h2 id="recommender-systems-and-behavioral-influence">Recommender
+systems and behavioral influence</h2>
+<p>A long literature studies algorithmic amplification and behavioral
+change in <em>human</em> users of recommender systems <span
+class="citation" data-cites="narayanan2023algorithmic">(Narayanan
+2023)</span>. We inherit its central premise, that what a ranker chooses
+to show changes what the audience does, but shift the audience from a
+human to an LLM agent. That shift changes both the threat model (the
+manipulator targets an automated decision maker that cannot step back
+and reflect on its media diet) and the available defenses (the feed is
+now something a system builder constructs and can therefore
+constrain).</p>
+<p>Taken together, prior work studies adversarial <em>content</em> (an
+injected instruction, a poisoned document, a jailbreak suffix) reaching
+a model, and defenses that try to detect or down-weight that content. To
+our knowledge, no prior work isolates the <em>ranker over benign
+content</em> as the attack surface, measures its effect on a held-fixed
+multi-step agent decision, or characterizes when that effect appears and
+when it does not. This paper does all three, and in doing so connects
+the recommender-systems and LLM-security literatures that have so far
+developed apart.</p>
+<h1 id="methodology">Methodology</h1>
 <h2 id="agent-protocol">Agent protocol</h2>
-<p>Each rollout has two phases.</p>
-<h4 id="feed-exposure.">Feed exposure.</h4>
-<p>The agent receives 10 turns of social-feed posts. Each turn shows 5
-posts. The agent reacts to each post with LIKE, SHARE, or SKIP and a
-one-sentence rationale. The conversation history retains the recent
-reaction exchanges, so downstream decisions are conditioned on
-accumulated exposure.</p>
-<h4 id="decision.">Decision.</h4>
-<p>After feed exposure, the agent receives a forced-choice decision
-prompt. For the remote-work experiments, the agent advises a CEO with
-three options: (A) full return-to-office, (B) hybrid, (C) remote-first.
-The main outcome is the final A/B/C recommendation.</p>
+<p>The agent protocol defines what the model is asked to do in every
+experiment, and we keep it deliberately simple so that the only thing
+varying between conditions is the feed itself. Each run, which we call a
+rollout, casts the model as an assistant and unfolds in two phases. In
+the first phase, exposure, the agent “scrolls” a social feed for ten
+turns; each turn presents five short posts, and the agent reacts to
+every post with a LIKE, SHARE, or SKIP and a one-sentence rationale,
+much as a person idly scrolling might. The recent reaction exchanges are
+retained in the conversation history, so by the end of the phase the
+model’s context holds an accumulated record of what it has read and how
+it responded. In the second phase, decision, the same agent is handed a
+single forced-choice question and must select one of three labelled
+options. In the remote-work experiments, for instance, it advises a CEO
+and chooses among (A) full return-to-office, (B) a hybrid arrangement,
+and (C) a remote-first policy, and we record only this final A/B/C
+answer. Critically, the persona, the wording of the decision question,
+and the model itself are identical across every condition; the sole
+difference is which posts appeared during exposure, so any change we
+observe in the final decision is attributable to the feed and nothing
+else.</p>
 <h2 id="sec:conditions">Feed conditions</h2>
 <p>Six core feed conditions are used. Each turn presents five posts; the
 conditions differ only in how those five posts are selected from the
@@ -305,7 +327,7 @@ a function of injection density.</p>
 <p>The internal software identifiers for each condition (used in the
 released code and rollout records) are listed in Appendix <a
 href="#app:identifiers" data-reference-type="ref"
-data-reference="app:identifiers">10</a>.</p>
+data-reference="app:identifiers">8</a>.</p>
 <h2 id="models">Models</h2>
 <p>The modern attack grid uses four open instruct LLMs released in
 2024–2025: Llama 3.2-3B (Meta), Gemma 4-e4b (Google), Qwen 3.5-2B, and
@@ -336,8 +358,8 @@ style.</p>
 <p>All five pools are released under CC-BY 4.0 as the Hugging Face
 dataset <code>ranausmans/feed-injection-pool</code>, and the file-level
 layout is documented in Appendix <a href="#app:identifiers"
-data-reference-type="ref" data-reference="app:identifiers">10</a>.</p>
-<h1 id="main-results">Main Results</h1>
+data-reference-type="ref" data-reference="app:identifiers">8</a>.</p>
+<h1 id="experiments-and-results">Experiments and Results</h1>
 <h2 id="sec:cross-model">Adversarial injection shifts Llama 3.2-3B
 decisions</h2>
 <p>Under organic random exposure, Llama 3.2-3B recommends remote-first
@@ -802,7 +824,8 @@ visible-history baselines are necessary.</p></li>
 <p>The methodological warning is a secondary contribution. The paper’s
 central claim is decision-level feed susceptibility, not secret
 activation fingerprints.</p>
-<h1 id="interpretation">Interpretation</h1>
+<h1 id="discussion">Discussion</h1>
+<h2 id="interpretation">Interpretation</h2>
 <p>The strongest interpretation is practical and systems-oriented:
 ranked feeds function as control surfaces for LLM agents, in the sense
 that the choice of ranker measurably shifts the agent’s downstream
@@ -838,7 +861,7 @@ the experiments isolate ranker-controlled exposure while holding the
 decision task fixed, span multiple decision domains and two model
 families, include null models, include generator-swap replication,
 characterize dose-response, and test defenses.</p>
-<h1 id="implications">Implications</h1>
+<h2 id="implications">Implications</h2>
 <p>The immediate implication is for agent evaluation. A benchmark that
 tests only the final prompt misses the upstream control surface. An
 agent may answer safely under a clean context but behave differently
@@ -860,7 +883,7 @@ splits and visible-history baselines.</p></li>
 social platforms, search rankings, recommender systems, email triage,
 retrieval- augmented memory, or any environment where a third party can
 influence what the agent sees before it acts.</p>
-<h1 id="limitations">Limitations</h1>
+<h2 id="limitations">Limitations</h2>
 <ul>
 <li><p><strong>Effect is task- and model-dependent.</strong> The attack
 is strongest on contestable decisions with a movable default and fails
@@ -921,13 +944,17 @@ answer.</em></p>
 </blockquote>
 <h1 class="unnumbered" id="reproducibility">Reproducibility</h1>
 <p>All code, post pools, and per-rollout decision logs are released
-alongside the paper. The five figures regenerate from the released
-decision-rollout files via the analysis scripts (see Appendix <a
-href="#app:identifiers" data-reference-type="ref"
-data-reference="app:identifiers">10</a> for the file map). The agent
-protocol uses standard HuggingFace Transformers and Ollama, with no
-gated weights and no non-public APIs. Random seeds are recorded with
-every rollout. The post pools are available as the Hugging Face dataset
+alongside the paper. The complete source, the agent and pool-generation
+code, and the analysis and figure scripts are available at <a
+href="https://github.com/ranausmanai/recommenders-as-control-surfaces"
+class="uri">https://github.com/ranausmanai/recommenders-as-control-surfaces</a>;
+the five figures regenerate from the released decision-rollout files via
+these scripts (see Appendix <a href="#app:identifiers"
+data-reference-type="ref" data-reference="app:identifiers">8</a> for the
+file map). The agent protocol uses standard HuggingFace Transformers and
+Ollama, with no gated weights and no non-public APIs, and random seeds
+are recorded with every rollout. The post pools are released under CC-BY
+4.0 as the Hugging Face dataset
 <code>ranausmans/feed-injection-pool</code>, and the per-rollout
 decision logs as <code>ranausmans/feed-injection-rollouts</code>.</p>
 <h1 id="app:identifiers">Software identifiers, file layout, and code
@@ -982,8 +1009,9 @@ class="math inline">\(k/5\)</span> adv.</td>
 </table>
 </div>
 <h4 id="post-pool-file-layout.">Post-pool file layout.</h4>
-<p>The five post pools are released as five JSON-Lines files under the
-Hugging Face dataset repository:</p>
+<p>The five remote-work post pools are released as JSON-Lines files
+under the Hugging Face dataset repository (the additional
+generalization-task pools follow the same schema):</p>
 <div class="center">
 <table>
 <thead>
@@ -1050,6 +1078,12 @@ Belrose, Nora, Zach Furman, Logan Smith, et al. 2023. <em>Eliciting
 Latent Predictions from Transformers with the Tuned Lens</em>. <a
 href="https://arxiv.org/abs/2303.08112">https://arxiv.org/abs/2303.08112</a>.
 </div>
+<div id="ref-chen2024agentpoison" class="csl-entry" role="listitem">
+Chen, Zhaorun, Zhen Xiang, Chaowei Xiao, Dawn Song, and Bo Li. 2024.
+<span>“<span>AgentPoison</span>: Red-Teaming <span>LLM</span> Agents via
+Poisoning Memory or Knowledge Bases.”</span> <em>Advances in Neural
+Information Processing Systems (NeurIPS)</em>.
+</div>
 <div id="ref-debenedetti2024agentdojo" class="csl-entry"
 role="listitem">
 Debenedetti, Edoardo, Jie Zhang, Mislav Balunović, Luca Beurer-Kellner,
@@ -1057,6 +1091,11 @@ Marc Fischer, and Florian Tramèr. 2024. <span>“<span>AgentDojo</span>: A
 Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses
 for <span>LLM</span> Agents.”</span> <em>Advances in Neural Information
 Processing Systems (NeurIPS) Datasets and Benchmarks Track</em>.
+</div>
+<div id="ref-geng2025control" class="csl-entry" role="listitem">
+Geng, Yilin, Haonan Li, Honglin Mu, et al. 2025. <em>Control Illusion:
+The Failure of Instruction Hierarchies in Large Language Models</em>. <a
+href="https://arxiv.org/abs/2502.15851">https://arxiv.org/abs/2502.15851</a>.
 </div>
 <div id="ref-greshake2023more" class="csl-entry" role="listitem">
 Greshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres,
@@ -1088,6 +1127,24 @@ href="https://knightcolumbia.org/content/understanding-social-media-recommendati
 Perez, Fábio, and Ian Ribeiro. 2022. <em>Ignore Previous Prompt: Attack
 Techniques for Language Models</em>. <a
 href="https://arxiv.org/abs/2211.09527">https://arxiv.org/abs/2211.09527</a>.
+</div>
+<div id="ref-wallace2024instruction" class="csl-entry" role="listitem">
+Wallace, Eric, Kai Xiao, Reimar Leike, Lilian Weng, Johannes Heidecke,
+and Alex Beutel. 2024. <em>The Instruction Hierarchy: Training
+<span>LLMs</span> to Prioritize Privileged Instructions</em>. <a
+href="https://arxiv.org/abs/2404.13208">https://arxiv.org/abs/2404.13208</a>.
+</div>
+<div id="ref-zhan2025adaptive" class="csl-entry" role="listitem">
+Zhan, Qiusi, Richard Fang, Henil Shalin Panchal, and Daniel Kang. 2025.
+<em>Adaptive Attacks Break Defenses Against Indirect Prompt Injection
+Attacks on <span>LLM</span> Agents</em>. <a
+href="https://arxiv.org/abs/2503.00061">https://arxiv.org/abs/2503.00061</a>.
+</div>
+<div id="ref-zhan2024injecagent" class="csl-entry" role="listitem">
+Zhan, Qiusi, Zhixiang Liang, Zifan Wang, and Daniel Kang. 2024.
+<span>“<span>InjecAgent</span>: Benchmarking Indirect Prompt Injections
+in Tool-Integrated Large Language Model Agents.”</span> <em>Findings of
+the Association for Computational Linguistics (ACL)</em>.
 </div>
 <div id="ref-zou2023universal" class="csl-entry" role="listitem">
 Zou, Andy, Zifan Wang, Nicholas Carlini, Milad Nasr, J. Zico Kolter, and

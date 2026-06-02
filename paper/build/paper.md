@@ -4,7 +4,7 @@
 
 ## Abstract
 
-LLM agents increasingly consume ranked external information streams — social feeds, search results, retrieval contexts, and email queues — yet the safety implications of *who controls that ranking* remain underexplored. Existing safety evaluations test the model in isolation or the user prompt in isolation, but rarely the upstream ranker that decides what the agent reads just before it acts. This work introduces a controlled adversarial-injection protocol that holds the underlying model, persona, topic, and final decision prompt fixed while varying only the composition and ordering of posts shown during a preceding ten-turn "scrolling" phase. Across 2,465 decision rollouts on four modern open instruct LLMs spanning three independent labs (Meta, Google, Alibaba), three response regimes emerge, which we term ***capitulation***, ***saturation***, and ***asymmetry***. On Llama 3.2-3B, an exemplar of the capitulation regime, heavy adversarial injection reduces *recommend fully remote* decisions from 100% to 50% (Bonferroni-corrected p = 0.0065), strengthens to 5% under a generator-swap robustness test in which Gemma 4 authors both organic and adversarial pools (p = 3 × 10⁻¹⁰), and follows a monotonic dose-response with an apparent threshold near two adversarial posts per five-post batch (chi-square p = 0.006). Gemma 4-e4b shifts analogously (40% → 0% remote-first; Bonferroni p = 0.049), whereas Qwen 3.5-2B and Qwen 3.5-9B exhibit the saturation regime, returning their default recommendation regardless of feed composition. Two feed-level defenses — *balanced exposure* and *ranking disclosure* — significantly restore baseline behavior in the susceptible model (balanced: 95% restoration on the Claude pool, 65% under generator-swap; disclosure: 85% / 45%).
+LLM agents increasingly consume ranked external information streams (social feeds, search results, retrieval contexts, and email queues), yet the safety implications of *who controls that ranking* remain underexplored. Existing safety evaluations test the model in isolation or the user prompt in isolation, but rarely the upstream ranker that decides what the agent reads just before it acts. This work introduces a controlled adversarial-injection protocol that holds the underlying model, persona, topic, and final decision prompt fixed while varying only the composition and ordering of posts shown during a preceding ten-turn "scrolling" phase. Across 2,465 decision rollouts on four modern open instruct LLMs spanning three independent labs (Meta, Google, Alibaba), three response regimes emerge: ***adversarial capitulation*** (the model's decision shifts toward the injected feed direction), ***default saturation*** (a strong baseline attractor overrides feed influence), and ***default-direction asymmetry*** (the model is susceptible only when the injection opposes its baseline default direction). On Llama 3.2-3B, an exemplar of the adversarial-capitulation regime, heavy adversarial injection reduces *recommend fully remote* decisions from 100% to 50% (Bonferroni-corrected p = 0.0065), strengthens to 5% under a generator-swap robustness test in which Gemma 4 authors both organic and adversarial pools (p = 3 × 10⁻¹⁰), and follows a monotonic dose-response with an apparent threshold near two adversarial posts per five-post batch (chi-square p = 0.006). Gemma 4-e4b shifts analogously (40% → 0% remote-first; Bonferroni p = 0.049), whereas Qwen 3.5-2B and Qwen 3.5-9B exhibit the default-saturation regime, returning their baseline recommendation regardless of feed composition. Two feed-level defenses, *balanced exposure* and *ranking disclosure*, significantly restore baseline behavior in the susceptible model (balanced: 95% restoration on the Claude pool, 65% under generator-swap; disclosure: 85% / 45%).
 
 **Contributions.** This paper makes three contributions:
 (i) the **three-regime taxonomy** of feed-injection susceptibility in modern instruct LLMs;
@@ -21,13 +21,25 @@ This paper asks a direct question: can a feed ranker steer an LLM agent's conseq
 
 Our initial experiments began as a mechanistic probing study. Linear probes could recover feed policy from residual-stream activations at high accuracy under random turn-level cross-validation. However, group-aware evaluation and visible-history baselines showed that this framing was overclaimed: naive CV inflated probe accuracy, and much of the activation signal was recoverable from visible conversation history. That failure is scientifically useful. It redirected the project from a hidden-representation story to a more operational question: whether ranked exposure changes what agents decide.
 
-The answer is nuanced but important. Feed injection does not universally overpower models. Instead, we observe three regimes:
+The answer is nuanced but important. Feed injection does not universally overpower models. Instead, three regimes emerge in our experiments:
 
-1. **Capitulation:** susceptible models move toward the injected feed pressure.
-2. **Saturation:** models with strong defaults ignore the feed and return the same decision.
-3. **Asymmetry / reactance:** injections aligned with an existing model default can be silent, while injections against the default can have large effects.
+1. **Adversarial capitulation.** Susceptible models (Llama 3.2-3B and Gemma 4-e4b in our grid) move toward the injected feed direction.
+2. **Default saturation.** Models with strong baseline attractors (Qwen 3.5-2B and Qwen 3.5-9B, both anchored near the "hybrid" option in the remote-work decision task) ignore the feed and return the same decision regardless of injection.
+3. **Default-direction asymmetry.** Injections aligned with an existing model default are silent (a pro-remote injection on Llama 3.2-3B, which already defaults to remote-first, has no measurable effect), whereas injections that oppose the default can produce large shifts.
 
 The main contribution is a controlled attack-and-defense study of these regimes. We show that adversarial post injection significantly changes downstream decisions in Llama 3.2-3B and Gemma 4-e4b, replicates under a post-generator swap, follows a dose-response curve, and can be mitigated by balanced exposure and ranking-disclosure defenses in the cleanest Llama setting.
+
+## 1.5 Related Work
+
+**Prompt injection and indirect prompt injection.** Direct prompt injection attacks on LLMs were first systematized by Perez and Ribeiro (2022). Greshake et al. (2023) extended the threat model to *indirect* prompt injection, where adversarial content is embedded in third-party documents the LLM retrieves rather than in the user's own input. Liu et al. (2024) formalized the attack surface and benchmarked defenses. The present work occupies a similar threat model, in that adversarial content reaches the agent through a third-party channel, but the channel is a *ranker over benign content*, and the targeted output is a downstream multi-step decision rather than a single-turn jailbreak.
+
+**Adversarial attacks on aligned LLMs.** Zou et al. (2023) demonstrated universal transferable suffixes that elicit harmful completions from safety-tuned models. Our setting differs in that the injected content is *not jailbreaking*; the adversarial posts are plausible, persuasive, and individually unremarkable. The attack therefore does not require bypassing safety training; it exploits ordinary in-context reasoning.
+
+**Retrieval-augmented and agentic poisoning.** Zou et al. (2024) studied corruption of retrieval indices in retrieval-augmented generation pipelines. Debenedetti et al. (2024) introduced AgentDojo for evaluating prompt injection against tool-using LLM agents. The present work is closely related to both: ranked-feed injection is the recommender-side analog of RAG poisoning, and the consequential-decision outcome we measure is in the spirit of AgentDojo's task-success metrics.
+
+**Probing and interpretability methodology.** Activation-probing work, including the tuned-lens framework of Belrose et al. (2023) and the linear-truth-direction results of Marks and Tegmark (2023), has produced strong results on single-turn classification of latent model state. Our methodological warning (§4) concerns a setting outside the typical probing literature, namely multi-turn agent trajectories, where standard random k-fold cross-validation systematically inflates accuracy, and a visible-history baseline often matches the probe.
+
+**Recommender systems and behavioral influence.** The longer-running literature on algorithmic amplification and behavioral change in human users, surveyed by Narayanan (2023), provides the conceptual backdrop. The contribution here is that the *audience* of the recommender shifts from a human to an LLM agent, which changes both the threat model and the available defenses.
 
 ## 2. Experimental Setup
 
@@ -47,43 +59,31 @@ The main outcome is the final A/B/C recommendation.
 
 ### 2.2 Feed Conditions
 
-The adversarial remote-work experiments use:
+Six core feed conditions are used. Each turn presents five posts; the conditions differ only in how those five posts are selected from the underlying organic and adversarial pools described in Section 2.4.
 
-- `organic_random`: five random organic posts per turn.
-- `organic_recency`: chronological organic posts.
-- `light`: one adversarial pro-RTO post plus four organic posts per turn.
-- `heavy`: five adversarial pro-RTO posts per turn.
-- `balanced`: two adversarial pro-RTO posts plus three organic posts per turn.
-- `disclosed_heavy`: heavy injection plus a system-level disclosure warning that the feed may be adversarially selected.
+The first two conditions are non-adversarial baselines. A *random baseline* draws all five posts uniformly at random from the organic pool. A *recency baseline* orders the organic pool by post identifier and serves the first five unseen posts each turn.
 
-Follow-up experiments add:
+Three conditions inject adversarial content at varying intensities. The *light injection* condition replaces one of the five organic posts with an adversarial item; the *heavy injection* condition replaces all five. A *balanced* condition, used as a candidate defense, serves two adversarial posts together with three random organic posts.
 
-- `anti-direction`: pro-remote adversarial posts, testing whether attacks aligned with the model's remote-first default have any effect.
-- `generator-swap`: Gemma 4-generated organic and adversarial pools, testing whether the effect is an artifact of Claude-written posts.
-- `dose0` to `dose5`: 0 to 5 adversarial posts per 5-post batch.
+A sixth condition, *disclosed heavy injection*, presents the same five adversarial posts as the heavy condition but prepends a one-sentence persona-level disclosure that the feed may have been adversarially selected.
+
+Three follow-up conditions extend the protocol. An *anti-direction* attack reuses the heavy and defense templates but with a pro-remote adversarial pool, testing whether injection aligned with the model's existing default direction has any effect. A *generator-swap* variant of all six core conditions uses adversarial and organic pools authored by Gemma 4 in place of Claude, testing whether the observed effects depend on the post writer's style. A *dose-response* sweep varies the number of adversarial posts per five-post batch from zero through five, characterizing the attack as a function of injection density.
+
+The internal software identifiers for each condition (used in the released code and rollout records) are listed in Appendix A.
 
 ### 2.3 Models
 
-The modern attack grid includes:
-
-- Llama 3.2-3B
-- Gemma 4-e4b
-- Qwen 3.5-2B
-- Qwen 3.5-9B
-
-Additional historical runs include Qwen2.5, SmolLM2, Falcon3, Yi, Zephyr, StableLM, TinyLlama, and activation-probe experiments. Those are not the headline evidence; they are used to motivate the shift from probing to decision-level auditing.
+The modern attack grid uses four open instruct LLMs released in 2024–2025: Llama 3.2-3B (Meta), Gemma 4-e4b (Google), Qwen 3.5-2B, and Qwen 3.5-9B (Alibaba), all served locally via Ollama. The exact Ollama tags invoked in every rollout are recorded in each released JSONL record. We avoid gated weights so the protocol is reproducible without authentication.
 
 ### 2.4 Post Pools
 
-Local artifacts include five post files:
+Five post pools provide the underlying content from which the conditions in Section 2.2 are constructed.
 
-- `posts/pool.jsonl`: 500 Claude-generated organic posts across five topics.
-- `posts/adversarial_rto.jsonl`: 50 Claude-generated pro-RTO adversarial posts.
-- `posts/adversarial_pro_remote.jsonl`: 50 Claude-generated pro-remote anti-direction posts.
-- `posts/pool_gemma.jsonl`: 100 Gemma-generated organic remote-work posts.
-- `posts/adversarial_rto_gemma.jsonl`: 50 Gemma-generated pro-RTO adversarial posts.
+Two pools are *organic*: an English-language pool of 500 synthetically authored posts spanning five topics (remote work, AI regulation, nuclear energy, basic income, and human gene editing), balanced across five stance levels and four intensity levels and generated by Claude (Anthropic); and a smaller 100-post organic pool restricted to the remote-work topic, generated by Gemma 4-e4b. The second pool exists to support the generator-swap robustness test.
 
-The generator-swap experiment is critical because it tests whether the attack depends on one generator's wording style.
+Three pools are *adversarial*, each containing fifty posts crafted to advocate one side of the remote-work debate persuasively without explicit identity attacks or named individuals. Two are written by Claude: one pro-return-to-office, used in the main attack experiments, and one pro-remote, used as an anti-direction control. The third is written by Gemma 4-e4b, pro-return-to-office, used to test whether the observed attack effects depend on the writer's idiomatic style.
+
+All five pools are released under CC-BY 4.0 as the Hugging Face dataset `ranausmans/feed-injection-pool`. The file-level layout is documented in Appendix A.
 
 ## 3. Main Results
 
@@ -134,11 +134,11 @@ We varied the number of adversarial posts per 5-post batch while keeping the sam
 
 The C-vs-non-C distribution differs across dose levels (chi-square p=0.0062). This dose-response curve is important: it makes the result look like an exposure-dependent effect, not a one-off statistical fluctuation.
 
-![Figure 2: Dose-response of adversarial injection on Llama 3.2-3B. Each point is n=20 seeds; shaded band is the 95% Wilson CI. The attack has a threshold near 2 adversarial posts per 5-post batch — below this, the effect is invisible; above it, the model's recommendation tilts monotonically.](paper_fig2_dose_response.png)
+![Figure 2: Dose-response of adversarial injection on Llama 3.2-3B. Each point is n=20 seeds; shaded band is the 95% Wilson CI. The attack has a threshold near 2 adversarial posts per 5-post batch: below this, the effect is invisible; above it, the model's recommendation tilts monotonically.](paper_fig2_dose_response.png)
 
 ### 3.4 Anti-Direction Attack Is a No-Op
 
-Llama 3.2-3B defaults to remote-first in the remote-work setting. When the adversarial pool is pro-remote rather than pro-RTO, every condition remains 20/20 remote-first. This asymmetry suggests the attack is not simply "more adversarial content causes instability." It matters whether injected content pushes against the model's default.
+Llama 3.2-3B defaults to remote-first in the remote-work setting. When the adversarial pool is pro-remote rather than pro-RTO, every condition remains 20/20 remote-first. This default-direction asymmetry suggests the attack is not simply "more adversarial content causes instability." It matters whether injected content pushes against the model's default.
 
 This is useful for threat modeling. Attacks aligned with a model's existing default may be invisible because the output does not change; attacks opposing the default reveal susceptibility.
 
@@ -148,7 +148,7 @@ In Llama 3.2-3B with Claude-generated posts, heavy attack moves remote-first fro
 
 In the Gemma-generated pool, the attack is stronger: 100% to 5%. Balanced exposure restores remote-first to 65%, while disclosure restores it to 45%. Both are significantly different from the heavy attack condition in Fisher tests on C: balanced p=0.00014, disclosed p=0.00836.
 
-The synced local artifacts do not show the same defense restoration for Gemma 4-e4b itself: in `decision_shift_adv_modern.jsonl`, Gemma 4 remains at 100% hybrid under heavy, balanced, and disclosed conditions. We therefore report Gemma as attack-susceptible but do not claim a demonstrated Gemma defense success from the local data.
+**Defense outcomes on Gemma 4.** The same defense conditions do not produce a comparable restoration on Gemma 4-e4b: under both balanced exposure and ranking disclosure, Gemma remains at 100% hybrid, matching the heavy-attack arm. Gemma is therefore reported as attack-susceptible without a demonstrated defense success in the present configuration. Possible explanations include Gemma's stronger default attractor toward the hybrid option (visible in its baseline distribution in §3.1) and a smaller effective dynamic range over which the defenses can operate.
 
 ![Figure 4: Defenses on Llama 3.2-3B. Left: Claude-written post pool. Right: Gemma-written post pool. Red bars show the heavy-attack baseline; green and purple show the two defenses; dashed blue line shows the organic-baseline P(remote-first). Significance markers compare each defense against the heavy-attack arm (Fisher's exact): *** p<0.001, ** p<0.01, * p<0.05.](paper_fig4_defenses.png)
 
@@ -167,17 +167,13 @@ This becomes a methodological contribution rather than the main result. The pape
 
 ## 5. Interpretation
 
-The strongest interpretation is practical and systems-oriented:
+The strongest interpretation is practical and systems-oriented: ranked feeds function as control surfaces for LLM agents, in the sense that the choice of ranker measurably shifts the agent's downstream behavior on a held-fixed decision task. This does not imply that every model follows every adversarial feed; the experimental results identify *model-specific regimes*.
 
-> Ranked feeds are control surfaces for LLM agents.
+**Adversarial capitulation.** Llama 3.2-3B follows adversarial return-to-office pressure in the remote-work decision task, with effects strengthening under the Gemma-pool generator-swap.
 
-This does not mean every model follows every malicious feed. The results instead show model-specific regimes.
+**Default saturation.** Qwen 3.5-2B and Qwen 3.5-9B are stable near hybrid recommendations in this setting; their baseline defaults swamp the attack.
 
-**Capitulation.** Llama 3.2-3B follows adversarial RTO pressure in the remote-work decision task, especially under Gemma-generated adversarial posts.
-
-**Saturation.** Qwen 3.5-2B and Qwen 3.5-9B are stable near hybrid recommendations in this setting. Their defaults swamp the attack.
-
-**Asymmetry.** Llama's pro-remote default is not further moved by pro-remote attack content, but it can be moved away from remote-first by pro-RTO content.
+**Default-direction asymmetry.** Llama's pro-remote default is not further moved by pro-remote attack content; the attack only succeeds when it crosses the model's default direction.
 
 **Partial defense.** Balanced feeds and ranking disclosure can reduce attack impact, but they are not universal fixes. Their effectiveness depends on the model and pool.
 
@@ -223,5 +219,35 @@ The title-level contribution is that recommender systems are a practical control
 
 ## Reproducibility
 
-All code, post pools, and per-rollout decision logs are released alongside the paper. The four headline figures regenerate from the released JSONL files via the included script (`notebooks/11_paper_figures.py`). The agent protocol uses standard HuggingFace Transformers and Ollama, with no non-public models or APIs. Random seeds are recorded with every rollout.
+All code, post pools, and per-rollout decision logs are released alongside the paper. The four headline figures regenerate from the released decision-rollout files via a single analysis script (see Appendix A for the file map). The agent protocol uses standard HuggingFace Transformers and Ollama, with no gated weights and no non-public APIs. Random seeds are recorded with every rollout. The post pools are available as the Hugging Face dataset [`ranausmans/feed-injection-pool`](https://huggingface.co/datasets/ranausmans/feed-injection-pool), and the per-rollout decision logs as [`ranausmans/feed-injection-rollouts`](https://huggingface.co/datasets/ranausmans/feed-injection-rollouts).
+
+## Appendix A: Software identifiers, file layout, and code locations
+
+For reproducibility, this appendix lists the mapping between the human-readable condition names used throughout the paper and the software identifiers used in the released code and rollout records.
+
+**Condition identifiers.** The following mapping is used in the `condition` field of every rollout record:
+
+| Paper label | Identifier in code and rollout records |
+|---|---|
+| random baseline | `organic_random` |
+| recency baseline | `organic_recency` |
+| light injection (1/5 adv.) | `light` |
+| heavy injection (5/5 adv.) | `heavy` |
+| balanced defense | `balanced` |
+| disclosed heavy injection | `disclosed_heavy` |
+| dose-response, k/5 adv. | `dose0`, `dose1`, …, `dose5` |
+
+**Post-pool file layout.** The five post pools are released as five JSON-Lines files under the Hugging Face dataset repository:
+
+| File | Contents |
+|---|---|
+| `pool.jsonl` | 500 Claude-generated organic posts (5 topics) |
+| `adversarial_rto.jsonl` | 50 Claude pro-return-to-office adversarial posts |
+| `adversarial_pro_remote.jsonl` | 50 Claude pro-remote adversarial posts (anti-direction control) |
+| `pool_gemma.jsonl` | 100 Gemma-generated organic posts (remote-work topic) |
+| `adversarial_rto_gemma.jsonl` | 50 Gemma pro-return-to-office adversarial posts |
+
+**Rollout-record file layout.** The 2,465 decision rollouts are released under the Hugging Face dataset `ranausmans/feed-injection-rollouts`. The headline cross-model attack data resides in `decision_shift_adv_modern.jsonl`; the generator-swap, anti-direction, and dose-response data resides in `decision_shift_followup.jsonl`.
+
+**Analysis script.** The four paper figures regenerate from the JSONL files via `notebooks/11_paper_figures.py` in the companion GitHub repository [`ranausmanai/recommenders-as-control-surfaces`](https://github.com/ranausmanai/recommenders-as-control-surfaces).
 

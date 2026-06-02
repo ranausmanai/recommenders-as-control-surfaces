@@ -177,7 +177,7 @@ The strongest interpretation is practical and systems-oriented: ranked feeds fun
 
 This is stronger than a "feeds influence models" platitude because the experiments isolate ranker-controlled exposure while holding the decision task fixed, include null models, include generator-swap replication, include dose-response, and test defenses.
 
-## 6. Why This Matters
+## 6. Implications
 
 The immediate implication is for agent evaluation. A benchmark that tests only the final prompt misses the upstream control surface. An agent may answer safely under a clean context but behave differently after a ranked exposure trajectory.
 
