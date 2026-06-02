@@ -1,6 +1,6 @@
-# Recommenders as Control Surfaces for LLM Agents
+# Adversarial Feeds Steer LLM Agent Decisions Against Their Defaults
 
-**Adversarial Feed Injection, Model Regimes, and Simple Defenses**
+*Recommenders as control surfaces for LLM agents: adversarial feed injection, model regimes, and simple defenses.*
 
 > *In an age of agentic AI, every recommender silently authors every reply.
 > The question is no longer whether models behave well; the question is who
@@ -30,7 +30,7 @@ decision prompt are held fixed.
   survive group-aware cross-validation** and a visible-history baseline —
   reported as a methodological warning.
 
-📄 **Paper**: [`paper/paper.tex`](paper/paper.tex) — arXiv: *coming soon*
+📄 **Paper**: [arXiv:2606.00914](https://arxiv.org/abs/2606.00914) — LaTeX source in [`paper/`](paper/paper.tex)
 
 🤗 **Datasets**:
 - Post pools: [`ranausmans/feed-injection-pool`](https://huggingface.co/datasets/ranausmans/feed-injection-pool)
@@ -102,18 +102,15 @@ triviality check on every model × condition cell.
 If you use this work, please cite:
 
 ```bibtex
-@misc{rana2026recommenders,
-  title  = {Recommenders as Control Surfaces for {LLM} Agents:
-            Adversarial Feed Injection, Model Regimes, and Simple Defenses},
-  author = {Rana Muhammad Usman},
-  year   = {2026},
-  eprint = {arXiv:XXXX.XXXXX},
-  archivePrefix={arXiv},
-  primaryClass={cs.CR}
+@misc{usman2026adversarial,
+  title         = {Adversarial Feeds Steer {LLM} Agent Decisions Against Their Defaults},
+  author        = {Rana Muhammad Usman},
+  year          = {2026},
+  eprint        = {2606.00914},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI}
 }
 ```
-
-(arXiv number will be filled in once the preprint is live.)
 
 ## License
 
