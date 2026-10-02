@@ -3,6 +3,10 @@
 This release accompanies **Counterfactual Evidence Audits Predict LLM-Agent
 Susceptibility to Ranked Context** (FLMSec 2026; arXiv:2606.00914 v2).
 
+Download the packaged artifact, manuscripts, source archives, and checksums
+from the
+[FLMSec 2026 camera-ready release](https://github.com/ranausmanai/recommenders-as-control-surfaces/releases/tag/flmsec-2026-camera-ready).
+
 ## Confirmatory Inventory
 
 The four retained studies contain exactly 3,500 jobs and 12,000 decision

@@ -3,6 +3,10 @@
 Code, data, frozen protocols, and analyses for the FLMSec 2026 paper and
 arXiv:2606.00914 v2.
 
+Stable PDFs, source packages, checksums, and the validated artifact archive
+are available in the
+[FLMSec 2026 camera-ready release](https://github.com/ranausmanai/recommenders-as-control-surfaces/releases/tag/flmsec-2026-camera-ready).
+
 ## Finding
 
 Upstream selectors determine which evidence an LLM agent sees. We test whether
