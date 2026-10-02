@@ -43,14 +43,9 @@ composed agent system.
 
 ## Comments
 
-19 pages, 1 figure. Accepted at the NeurIPS 2026 Workshop on Foundations of
-Language Model Security (FLMSec 2026). Substantially revised after peer review:
-introduces a preregistered five-document counterfactual evidence audit, 1,800
-matched controls, held-out validation across seven open-weight families,
-feed-to-RAG transfer, a disclosure-defense test, and a three-tier Codex
-boundary study; narrows unsupported universal and asymmetry claims.
-Code and data:
-https://github.com/ranausmanai/recommenders-as-control-surfaces/releases/tag/flmsec-2026-camera-ready
+19 pages, 1 figure. Accepted at FLMSec 2026 (NeurIPS 2026 Workshop).
+Substantially revised after peer review with new preregistered audits, matched
+controls, held-out validation, RAG transfer, and Codex boundary tests.
 
 ## Replacement Reason
 
