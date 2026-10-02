@@ -26,27 +26,31 @@ held-out open-weight model families. Across 18 held-out model-task cells,
 five-document effects predict full-context effects with Spearman rho=.855
 (p<.001), reduce mean absolute prediction error by 62% relative to a zero-
 effect predictor, and recover the direction of 12 of 13 material effects.
-Matched controls show that selecting one-sided ordinary items, rather than
-merely reordering identical items, causes the shift in a susceptible model.
-Across seven open-weight families, susceptibility transfers from an
-interactive feed to a static RAG dossier (rho=.750, exact p=.033), while a
-provenance warning does not reliably mitigate it. A separate study of three
-deployed Codex agent tiers finds strong audit-to-full ranking (rho=.951,
-p<.001) but no individually significant full-context effect after correction.
-The result is a reproducible screening method, not a universal steering claim:
-evidence selection must be evaluated as part of the composed agent system.
+A reviewer-requested post-hoc task-mean baseline is also substantially weaker
+(MAE .369 versus .167). Matched controls show that selecting one-sided
+ordinary items, rather than merely reordering identical items, causes the
+shift in a susceptible model. Across seven open-weight families,
+susceptibility transfers from an interactive feed to a static RAG dossier
+(rho=.750, exact p=.033), while a provenance warning does not reliably
+mitigate it. A separate study of three deployed Codex agent tiers finds strong
+audit-to-full ranking (rho=.951, p<.001) but no individually significant
+full-context effect after correction. Within this single synthetic remote-
+work domain, the result supports a domain-specific triage procedure, not a
+universal steering claim: evidence selection must be evaluated as part of the
+composed agent system.
 
 ## Keywords
 
-LLM agents; agent security; retrieval-augmented generation; recommender
-systems; evidence selection; behavioral auditing; compositional security;
-counterfactual evaluation
+LLM agents, agent security, retrieval-augmented generation, evidence
+selection, behavioral auditing, compositional security, counterfactual
+evaluation, ranked context
 
 ## TL;DR
 
-A five-document counterfactual audit prospectively predicts which LLM
-model-task pairs will be steered by disjoint 45-document ranked contexts,
-revealing the evidence selector as part of the agent's security boundary.
+A five-document counterfactual audit prospectively predicts susceptibility to
+disjoint 45-document ranked contexts across held-out LLM model-task pairs,
+exposing the upstream evidence selector as part of the agent's security
+boundary.
 
 ## Topic Selections
 
