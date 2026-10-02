@@ -1,0 +1,60 @@
+{
+  "created_unix": 1785152115.9270923,
+  "excluded_smoke_seeds": [
+    990,
+    991,
+    992,
+    993,
+    994,
+    995,
+    996,
+    997,
+    998,
+    999
+  ],
+  "design": {
+    "n_per_cell": 20,
+    "job_count": 700,
+    "holdout_models": [
+      "lfm2.5:8b-a1b-q4_K_M",
+      "granite4:7b-a1b-h",
+      "MichelRosselli/apertus:8b-instruct-2509-q4_k_m"
+    ],
+    "development_models": [
+      "glm-4.7-flash:q4_K_M",
+      "gpt-oss:20b",
+      "olmo-3:7b-instruct-q4_K_M",
+      "nemotron-3-nano:4b"
+    ],
+    "conditions": [
+      "no_feed",
+      "audit_rto",
+      "audit_remote",
+      "full_rto",
+      "full_remote"
+    ],
+    "decoding": {
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "num_ctx": 16384,
+      "reaction_token_ceiling": 360,
+      "decision_token_ceiling": 1024
+    },
+    "hashes": {
+      "preregistration": "b479bfacb1450e56c03071581966d043546b4275ba29bda522b4ce7277aee6d8",
+      "runner": "8f159c9995536f53b55fa9ffae10c714f7f56bbae275df5bb29897511672fee4",
+      "queue": "085009fdf1193c403d269d3f6cb1316b2f8ee53dbc92d0c6f35923876a705fff",
+      "analysis": "11a20c8e3fa887f0f395b23630fef23ea107c9f90ba2bbec161fa985864b4dfe",
+      "compatibility_runtime": "9b214d7b6edd9dc50c767b3e925503ce6b05c44ce6b99b8a3dce8c07b2f6a9a0",
+      "matched_pool": "9cd2613879298e86e40cdb3fc2fbe457c277bf2e6343e6f410e1617c6bb14520"
+    }
+  },
+  "environment": {
+    "python": "3.11.10 (main, Sep  7 2024, 18:35:41) [GCC 11.4.0]",
+    "platform": "Linux-6.8.0-60-generic-x86_64-with-glibc2.35",
+    "git_commit_at_launch": "",
+    "ollama_version": "ollama version is 0.32.4",
+    "ollama_models_at_launch": "NAME                                              ID              SIZE      MODIFIED       \nMichelRosselli/apertus:8b-instruct-2509-q4_k_m    4dd40b7ed3c0    5.1 GB    18 minutes ago    \ngranite4:7b-a1b-h                                 566b725534ea    4.2 GB    13 hours ago      \nlfm2.5:8b-a1b-q4_K_M                              9cf756159fc2    5.2 GB    13 hours ago      \nnemotron-3-nano:4b                                6cc467f05439    2.8 GB    13 hours ago      \nolmo-3:7b-instruct-q4_K_M                         ea72df8c85d7    4.5 GB    13 hours ago      \nministral-3:14b                                   4760c35aeb9d    9.1 GB    13 hours ago      \ngpt-oss:20b                                       17052f91a42e    13 GB     13 hours ago      \nglm-4.7-flash:q4_K_M                              4475827791a2    19 GB     13 hours ago      \ncommand-r7b:7b                                    ff4e9696ef9f    5.1 GB    13 hours ago      \nolmo2:7b                                          4208d3b406db    4.5 GB    13 hours ago      \ngranite3.3:8b                                     fd429f23b909    4.9 GB    13 hours ago      \nphi4-mini:3.8b-q4_K_M                             78fad5d182a7    2.5 GB    13 hours ago      \nmistral:7b-instruct-v0.3-q4_K_M                   6577803aa9a0    4.4 GB    13 hours ago",
+    "gpu": "NVIDIA RTX 4000 Ada Generation, 20475 MiB, 570.133.07"
+  }
+}

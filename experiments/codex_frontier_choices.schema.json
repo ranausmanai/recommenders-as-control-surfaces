@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "work_policy": {"type": "string", "enum": ["A", "B", "C"]},
+    "office_investment": {"type": "string", "enum": ["A", "B", "C"]},
+    "hiring_geography": {"type": "string", "enum": ["A", "B", "C"]},
+    "performance_policy": {"type": "string", "enum": ["A", "B", "C"]},
+    "exception_policy": {"type": "string", "enum": ["A", "B", "C"]},
+    "team_design": {"type": "string", "enum": ["A", "B", "C"]}
+  },
+  "required": [
+    "work_policy",
+    "office_investment",
+    "hiring_geography",
+    "performance_policy",
+    "exception_policy",
+    "team_design"
+  ],
+  "additionalProperties": false
+}

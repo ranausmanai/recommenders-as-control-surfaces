@@ -1,31 +1,26 @@
 cff-version: 1.2.0
-title: "Adversarial Feeds Steer LLM Agent Decisions Against Their Defaults"
-message: "If you use this work, please cite it as below."
+title: "Counterfactual Evidence Audits Predict LLM-Agent Susceptibility to Ranked Context"
+message: "If you use this work, please cite the paper below."
 type: software
 authors:
-  - family-names: "Rana"
-    given-names: "Muhammad Usman"
+  - family-names: "Usman"
+    given-names: "Rana Muhammad"
     email: "usmanashrafrana@gmail.com"
 abstract: >
-  We study whether the choice of feed-ranking algorithm consumed by an LLM
-  agent during a multi-turn exposure phase can steer the agent's downstream
-  decisions, holding model, persona, topic, and final prompt fixed. Across
-  2,785 decision rollouts and four modern open instruct LLMs from three labs,
-  we find that adversarial post injection produces statistically significant
-  decision shifts in two of four model families (Llama 3.2-3B, Gemma 4-e4b),
-  replicates with a generator-swap, follows a dose-response curve, is
-  directionally asymmetric to the model's default, and yields to two simple
-  feed-level defenses. We further document a methodological warning:
-  standard random-CV activation probing overstates "hidden mechanism" claims
-  in multi-turn agent settings.
+  We introduce a five-document counterfactual evidence audit that predicts
+  responses to disjoint 45-document contexts in held-out open-weight
+  model-task cells. Matched controls isolate evidence composition from order,
+  cross-interface tests evaluate transfer to static RAG, and a separate Codex
+  study identifies a deployed-agent boundary. The validated claim is a
+  domain-specific triage procedure for one synthetic remote-work corpus.
 keywords:
   - large language models
-  - agentic AI
-  - adversarial attacks
-  - prompt injection
+  - LLM agents
+  - retrieval-augmented generation
   - recommender systems
-  - AI safety
-  - feed manipulation
+  - evidence selection
+  - behavioral auditing
+  - agent security
 license: MIT
 url: "https://github.com/ranausmanai/recommenders-as-control-surfaces"
 identifiers:
@@ -38,9 +33,9 @@ identifiers:
 preferred-citation:
   type: article
   authors:
-    - family-names: "Rana"
-      given-names: "Muhammad Usman"
-  title: "Adversarial Feeds Steer LLM Agent Decisions Against Their Defaults"
+    - family-names: "Usman"
+      given-names: "Rana Muhammad"
+  title: "Counterfactual Evidence Audits Predict LLM-Agent Susceptibility to Ranked Context"
   year: 2026
   journal: "arXiv preprint arXiv:2606.00914"
   doi: "10.48550/arXiv.2606.00914"

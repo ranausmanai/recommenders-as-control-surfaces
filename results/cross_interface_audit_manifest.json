@@ -1,0 +1,32 @@
+{
+  "created_unix": 1785187586.9702535,
+  "design": {
+    "job_count": 700,
+    "decision_count": 4200,
+    "models": [
+      "lfm2.5:8b-a1b-q4_K_M",
+      "granite4:7b-a1b-h",
+      "MichelRosselli/apertus:8b-instruct-2509-q4_k_m",
+      "glm-4.7-flash:q4_K_M",
+      "gpt-oss:20b",
+      "olmo-3:7b-instruct-q4_K_M",
+      "nemotron-3-nano:4b"
+    ],
+    "conditions": [
+      "retrieval_rto",
+      "retrieval_remote",
+      "retrieval_rto_disclosed",
+      "retrieval_remote_disclosed",
+      "retrieval_balanced"
+    ],
+    "n_per_cell": 20,
+    "hashes": {
+      "preregistration": "90ba35048c0ba25e0aa56ba34c63ecaf2ca3ac16111ac6676448400a70e50351",
+      "runner": "146a70191945b0c4955c34039495a62bcce1588f27a41405237c28b005b6b144",
+      "queue": "c09f4fb1ab3b9e32de8c6eddd93bedd7c588584e893cffde1d7e5527a74b025b",
+      "analysis": "776935520f05a0dcccdff247fd97dd5b0b2517c112703c905a0748c840dbcc8f",
+      "structured_runtime": "f1045098cfc48d86bbccc8da2a5c668a90092cd7ab0b78c8d98c2eafe7fb9093",
+      "matched_pool": "9cd2613879298e86e40cdb3fc2fbe457c277bf2e6343e6f410e1617c6bb14520"
+    }
+  }
+}

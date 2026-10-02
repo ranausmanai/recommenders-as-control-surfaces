@@ -1,0 +1,24 @@
+{
+  "analysis_type": "post_hoc_reviewer_requested_baseline",
+  "source": "results/susceptibility_audit_structured_analysis.json",
+  "n_development_models": 4,
+  "n_holdout_cells": 18,
+  "development_full_effect_mean_by_task": {
+    "exception_policy": -0.3,
+    "hiring_geography": -0.6000000000000001,
+    "office_investment": -0.95,
+    "performance_policy": -0.5625,
+    "team_design": -0.375,
+    "work_policy": -0.5625
+  },
+  "task_mean_predictor": {
+    "mean_absolute_error": 0.36944444444444446,
+    "spearman_rho": 0.28412037862131423
+  },
+  "counterfactual_audit_predictor": {
+    "mean_absolute_error": 0.16666666666666663,
+    "spearman_rho": 0.8550615352348503
+  },
+  "audit_mae_reduction_vs_task_mean": 0.548872180451128,
+  "interpretation": "The held-out audit result is not explained by a shared per-task susceptibility profile estimated from development models. This comparison is post-hoc and descriptive."
+}

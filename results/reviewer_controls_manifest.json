@@ -1,0 +1,48 @@
+{
+  "created_unix": 1784988172.018357,
+  "design": {
+    "n_per_cell": 50,
+    "job_count": 1800,
+    "models": [
+      "llama3.2:3b",
+      "gemma4:e4b",
+      "qwen3.5:2b",
+      "qwen3.5:9b"
+    ],
+    "core_models": [
+      "llama3.2:3b",
+      "gemma4:e4b"
+    ],
+    "topics": [
+      "remote_work",
+      "ai_regulation",
+      "ubi",
+      "deploy_security",
+      "vendor_security",
+      "access_policy"
+    ],
+    "selection_conditions": [
+      "matched_balanced",
+      "matched_rto",
+      "matched_remote"
+    ],
+    "order_conditions": [
+      "order_interleaved",
+      "order_rto_last",
+      "order_remote_last"
+    ],
+    "hashes": {
+      "preregistration": "6eade880994525ab0f28fa0b8ec0061548d310534114556f48ea28655b902938",
+      "runner": "2c06201555c3df3e046f0c5c12549366202c8f1014dc39941c69b9a798b26644",
+      "queue": "2add214bfb178f42f77eb254a328a05d4af2d2e09caa7c469840b9f2757b359c",
+      "analysis": "268bc3c18fd39224cec31f01bb7484a89891e1a1035f770ea197185a58913170",
+      "matched_pool": "9cd2613879298e86e40cdb3fc2fbe457c277bf2e6343e6f410e1617c6bb14520"
+    }
+  },
+  "environment": {
+    "python": "3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 08:22:19) [Clang 14.0.6 ]",
+    "platform": "macOS-15.6-arm64-arm-64bit",
+    "git_commit_at_launch": "a0277f4fcc022b504a3580c67024b2fcc60a4eb0",
+    "ollama_version": "ollama version is 0.30.10"
+  }
+}

@@ -40,6 +40,12 @@ Thumbs.db
 # Temp / scratch
 /tmp_*
 *.tmp
+tmp/
+
+# Local publication bundles and raw execution archives
+# Final PDFs and the validated artifact archive are attached to GitHub Releases.
+output/
+artifacts/
 
 # Claude Code session state
 .claude/

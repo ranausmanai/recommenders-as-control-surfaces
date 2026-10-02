@@ -1,0 +1,2294 @@
+{
+  "analysis_version": 1,
+  "n_records": 700,
+  "expected_records": 700,
+  "bootstrap_draws": 20000,
+  "holdout_models": [
+    "lfm2.5:8b-a1b-q4_K_M",
+    "granite4:7b-a1b-h",
+    "MichelRosselli/apertus:8b-instruct-2509-q4_k_m"
+  ],
+  "development_models": [
+    "glm-4.7-flash:q4_K_M",
+    "gpt-oss:20b",
+    "olmo-3:7b-instruct-q4_K_M",
+    "nemotron-3-nano:4b"
+  ],
+  "holdout_complete": true,
+  "primary_validation": {
+    "n_cells": 18,
+    "spearman_rho": 0.8550615352348503,
+    "permutation_p_one_sided": 0.00024999750002499977,
+    "permutation_draws": 100000,
+    "mean_absolute_error_audit_predictor": 0.16666666666666663,
+    "mean_absolute_error_zero_predictor": 0.4361111111111111,
+    "mae_improvement_over_zero": 0.2694444444444445,
+    "directional_cells": 13,
+    "directional_concordant": 12,
+    "directional_concordance": 0.9230769230769231,
+    "classification": {
+      "thresholds": {
+        "absolute_audit_effect": 0.2,
+        "absolute_full_effect": 0.2
+      },
+      "confusion": {
+        "tp": 9,
+        "tn": 5,
+        "fp": 0,
+        "fn": 4
+      },
+      "sensitivity": 0.6923076923076923,
+      "specificity": 1.0,
+      "precision": 1.0,
+      "balanced_accuracy": 0.8461538461538461
+    }
+  },
+  "primary_validates": true,
+  "development_descriptive": {
+    "n_cells": 24,
+    "spearman_rho": 0.7768559692660328,
+    "permutation_p_one_sided": 0.0031299687003129967,
+    "permutation_draws": 100000,
+    "mean_absolute_error_audit_predictor": 0.2125,
+    "mean_absolute_error_zero_predictor": 0.5625,
+    "mae_improvement_over_zero": 0.35,
+    "directional_cells": 19,
+    "directional_concordant": 19,
+    "directional_concordance": 1.0,
+    "classification": {
+      "thresholds": {
+        "absolute_audit_effect": 0.2,
+        "absolute_full_effect": 0.2
+      },
+      "confusion": {
+        "tp": 18,
+        "tn": 4,
+        "fp": 1,
+        "fn": 1
+      },
+      "sensitivity": 0.9473684210526315,
+      "specificity": 0.8,
+      "precision": 0.9473684210526315,
+      "balanced_accuracy": 0.8736842105263158
+    }
+  },
+  "all_cells_descriptive": {
+    "n_cells": 42,
+    "spearman_rho": 0.819674807583777,
+    "permutation_p_one_sided": 9.99990000099999e-06,
+    "permutation_draws": 100000,
+    "mean_absolute_error_audit_predictor": 0.19285714285714284,
+    "mean_absolute_error_zero_predictor": 0.5083333333333333,
+    "mae_improvement_over_zero": 0.31547619047619047,
+    "directional_cells": 32,
+    "directional_concordant": 31,
+    "directional_concordance": 0.96875,
+    "classification": {
+      "thresholds": {
+        "absolute_audit_effect": 0.2,
+        "absolute_full_effect": 0.2
+      },
+      "confusion": {
+        "tp": 27,
+        "tn": 9,
+        "fp": 1,
+        "fn": 5
+      },
+      "sensitivity": 0.84375,
+      "specificity": 0.9,
+      "precision": 0.9642857142857143,
+      "balanced_accuracy": 0.871875
+    }
+  },
+  "cells": [
+    {
+      "model": "lfm2.5:8b-a1b-q4_K_M",
+      "role": "holdout",
+      "task": "work_policy",
+      "audit_effect": 0.0,
+      "audit_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "full_effect": 0.05,
+      "full_bootstrap_95_ci": [
+        0.0,
+        0.15
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.05,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.15
+          ]
+        },
+        "full_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "lfm2.5:8b-a1b-q4_K_M",
+      "role": "holdout",
+      "task": "office_investment",
+      "audit_effect": 0.2,
+      "audit_bootstrap_95_ci": [
+        0.0,
+        0.45
+      ],
+      "full_effect": -0.3,
+      "full_bootstrap_95_ci": [
+        -0.65,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.5,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.8,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.55
+          ]
+        },
+        "audit_remote": {
+          "effect": -1.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.3,
+            -0.75
+          ]
+        },
+        "full_rto": {
+          "effect": -0.7,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.05,
+            -0.35
+          ]
+        },
+        "full_remote": {
+          "effect": -0.4,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.7,
+            -0.1
+          ]
+        }
+      }
+    },
+    {
+      "model": "lfm2.5:8b-a1b-q4_K_M",
+      "role": "holdout",
+      "task": "hiring_geography",
+      "audit_effect": 0.0,
+      "audit_bootstrap_95_ci": [
+        -0.15,
+        0.15
+      ],
+      "full_effect": -0.15,
+      "full_bootstrap_95_ci": [
+        -0.3,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.15,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -1.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.15,
+            -0.85
+          ]
+        },
+        "audit_remote": {
+          "effect": -1.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -1.0
+          ]
+        },
+        "full_rto": {
+          "effect": -1.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.25,
+            -1.0
+          ]
+        },
+        "full_remote": {
+          "effect": -0.95,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.85
+          ]
+        }
+      }
+    },
+    {
+      "model": "lfm2.5:8b-a1b-q4_K_M",
+      "role": "holdout",
+      "task": "performance_policy",
+      "audit_effect": -0.45,
+      "audit_bootstrap_95_ci": [
+        -0.8,
+        -0.15
+      ],
+      "full_effect": -0.6,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.2
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.14999999999999997,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.55,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.95,
+            -0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.4,
+            0.2
+          ]
+        },
+        "full_rto": {
+          "effect": -0.65,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.1,
+            -0.2
+          ]
+        },
+        "full_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.3,
+            0.2
+          ]
+        }
+      }
+    },
+    {
+      "model": "lfm2.5:8b-a1b-q4_K_M",
+      "role": "holdout",
+      "task": "exception_policy",
+      "audit_effect": 0.05,
+      "audit_bootstrap_95_ci": [
+        0.0,
+        0.15
+      ],
+      "full_effect": 0.2,
+      "full_bootstrap_95_ci": [
+        0.05,
+        0.4
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.15000000000000002,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.4
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.1,
+            0.35
+          ]
+        },
+        "full_rto": {
+          "effect": 0.35,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.1,
+            0.6
+          ]
+        },
+        "full_remote": {
+          "effect": 0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.3
+          ]
+        }
+      }
+    },
+    {
+      "model": "lfm2.5:8b-a1b-q4_K_M",
+      "role": "holdout",
+      "task": "team_design",
+      "audit_effect": -0.15,
+      "audit_bootstrap_95_ci": [
+        -0.3,
+        0.0
+      ],
+      "full_effect": 0.0,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.15
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.15,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.3,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.15
+          ]
+        },
+        "full_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "granite4:7b-a1b-h",
+      "role": "holdout",
+      "task": "work_policy",
+      "audit_effect": -0.95,
+      "audit_bootstrap_95_ci": [
+        -1.0,
+        -0.85
+      ],
+      "full_effect": -1.0,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -1.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.050000000000000044,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.75,
+            1.0
+          ]
+        },
+        "full_rto": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.95,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.85,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "granite4:7b-a1b-h",
+      "role": "holdout",
+      "task": "office_investment",
+      "audit_effect": -0.25,
+      "audit_bootstrap_95_ci": [
+        -0.5,
+        0.05
+      ],
+      "full_effect": -0.55,
+      "full_bootstrap_95_ci": [
+        -0.8,
+        -0.3
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.30000000000000004,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.5,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.8,
+            -0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.55,
+            0.05
+          ]
+        },
+        "full_rto": {
+          "effect": -0.65,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.9,
+            -0.4
+          ]
+        },
+        "full_remote": {
+          "effect": -0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.4,
+            0.2
+          ]
+        }
+      }
+    },
+    {
+      "model": "granite4:7b-a1b-h",
+      "role": "holdout",
+      "task": "hiring_geography",
+      "audit_effect": -0.5,
+      "audit_bootstrap_95_ci": [
+        -0.7,
+        -0.3
+      ],
+      "full_effect": -0.3,
+      "full_bootstrap_95_ci": [
+        -0.5,
+        -0.1
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.2,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.55,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.8,
+            -0.3
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.35,
+            0.25
+          ]
+        },
+        "full_rto": {
+          "effect": -0.6,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.8,
+            -0.4
+          ]
+        },
+        "full_remote": {
+          "effect": -0.3,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.65,
+            0.05
+          ]
+        }
+      }
+    },
+    {
+      "model": "granite4:7b-a1b-h",
+      "role": "holdout",
+      "task": "performance_policy",
+      "audit_effect": -0.8,
+      "audit_bootstrap_95_ci": [
+        -1.0,
+        -0.6
+      ],
+      "full_effect": -0.9,
+      "full_bootstrap_95_ci": [
+        -1.25,
+        -0.55
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.09999999999999998,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.85,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.1,
+            -0.6
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.2,
+            0.1
+          ]
+        },
+        "full_rto": {
+          "effect": -0.95,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.25,
+            -0.65
+          ]
+        },
+        "full_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.2,
+            0.1
+          ]
+        }
+      }
+    },
+    {
+      "model": "granite4:7b-a1b-h",
+      "role": "holdout",
+      "task": "exception_policy",
+      "audit_effect": 0.0,
+      "audit_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.05,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        }
+      }
+    },
+    {
+      "model": "granite4:7b-a1b-h",
+      "role": "holdout",
+      "task": "team_design",
+      "audit_effect": -0.9,
+      "audit_bootstrap_95_ci": [
+        -1.0,
+        -0.75
+      ],
+      "full_effect": -0.9,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.75
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.0,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.75
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": -0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.75
+          ]
+        },
+        "full_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "MichelRosselli/apertus:8b-instruct-2509-q4_k_m",
+      "role": "holdout",
+      "task": "work_policy",
+      "audit_effect": -0.9,
+      "audit_bootstrap_95_ci": [
+        -1.0,
+        -0.75
+      ],
+      "full_effect": -0.85,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.7
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.050000000000000044,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.75,
+            -0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.25,
+            0.65
+          ]
+        },
+        "full_rto": {
+          "effect": -0.4,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.7,
+            -0.05
+          ]
+        },
+        "full_remote": {
+          "effect": 0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.25,
+            0.65
+          ]
+        }
+      }
+    },
+    {
+      "model": "MichelRosselli/apertus:8b-instruct-2509-q4_k_m",
+      "role": "holdout",
+      "task": "office_investment",
+      "audit_effect": -0.65,
+      "audit_bootstrap_95_ci": [
+        -0.95,
+        -0.3
+      ],
+      "full_effect": -0.85,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.7
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.19999999999999996,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.7,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.4,
+            0.95
+          ]
+        },
+        "full_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "full_remote": {
+          "effect": 0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.75,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "MichelRosselli/apertus:8b-instruct-2509-q4_k_m",
+      "role": "holdout",
+      "task": "hiring_geography",
+      "audit_effect": -0.15,
+      "audit_bootstrap_95_ci": [
+        -0.3,
+        0.0
+      ],
+      "full_effect": -0.3,
+      "full_bootstrap_95_ci": [
+        -0.5,
+        -0.1
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.15,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.35,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.55,
+            -0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.2,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.4,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": -0.35,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.55,
+            -0.15
+          ]
+        },
+        "full_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.3,
+            0.2
+          ]
+        }
+      }
+    },
+    {
+      "model": "MichelRosselli/apertus:8b-instruct-2509-q4_k_m",
+      "role": "holdout",
+      "task": "performance_policy",
+      "audit_effect": 0.05,
+      "audit_bootstrap_95_ci": [
+        -0.1,
+        0.2
+      ],
+      "full_effect": 0.35,
+      "full_bootstrap_95_ci": [
+        0.15,
+        0.55
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.3,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.2,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.55,
+            0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.55,
+            0.05
+          ]
+        },
+        "full_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.35,
+            0.45
+          ]
+        },
+        "full_remote": {
+          "effect": -0.3,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.55,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "MichelRosselli/apertus:8b-instruct-2509-q4_k_m",
+      "role": "holdout",
+      "task": "exception_policy",
+      "audit_effect": 0.0,
+      "audit_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "full_effect": -0.15,
+      "full_bootstrap_95_ci": [
+        -0.3,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.15,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.3
+          ]
+        }
+      }
+    },
+    {
+      "model": "MichelRosselli/apertus:8b-instruct-2509-q4_k_m",
+      "role": "holdout",
+      "task": "team_design",
+      "audit_effect": -0.05,
+      "audit_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_effect": -0.35,
+      "full_bootstrap_95_ci": [
+        -0.55,
+        -0.15
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.3,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.25,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "full_remote": {
+          "effect": 0.4,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.2,
+            0.6
+          ]
+        }
+      }
+    },
+    {
+      "model": "glm-4.7-flash:q4_K_M",
+      "role": "development",
+      "task": "work_policy",
+      "audit_effect": -0.3,
+      "audit_bootstrap_95_ci": [
+        -0.5,
+        -0.1
+      ],
+      "full_effect": -0.1,
+      "full_bootstrap_95_ci": [
+        -0.25,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.19999999999999998,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.3,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.1,
+            0.5
+          ]
+        },
+        "full_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "full_remote": {
+          "effect": 0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.3
+          ]
+        }
+      }
+    },
+    {
+      "model": "glm-4.7-flash:q4_K_M",
+      "role": "development",
+      "task": "office_investment",
+      "audit_effect": -0.25,
+      "audit_bootstrap_95_ci": [
+        -0.55,
+        0.05
+      ],
+      "full_effect": -0.25,
+      "full_bootstrap_95_ci": [
+        -0.5,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.0,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.4,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.35
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.5
+          ]
+        }
+      }
+    },
+    {
+      "model": "glm-4.7-flash:q4_K_M",
+      "role": "development",
+      "task": "hiring_geography",
+      "audit_effect": 0.15,
+      "audit_bootstrap_95_ci": [
+        0.0,
+        0.3
+      ],
+      "full_effect": 0.05,
+      "full_bootstrap_95_ci": [
+        -0.1,
+        0.2
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.09999999999999999,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.35,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.15,
+            0.55
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.2,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.05,
+            0.4
+          ]
+        },
+        "full_rto": {
+          "effect": 0.3,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.1,
+            0.5
+          ]
+        },
+        "full_remote": {
+          "effect": 0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.05,
+            0.45
+          ]
+        }
+      }
+    },
+    {
+      "model": "glm-4.7-flash:q4_K_M",
+      "role": "development",
+      "task": "performance_policy",
+      "audit_effect": -0.15,
+      "audit_bootstrap_95_ci": [
+        -0.45,
+        0.15
+      ],
+      "full_effect": -0.2,
+      "full_bootstrap_95_ci": [
+        -0.45,
+        0.05
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.05000000000000002,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.4,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.2,
+            0.6
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.55,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.35,
+            0.75
+          ]
+        },
+        "full_rto": {
+          "effect": 0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.5
+          ]
+        },
+        "full_remote": {
+          "effect": 0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.25,
+            0.65
+          ]
+        }
+      }
+    },
+    {
+      "model": "glm-4.7-flash:q4_K_M",
+      "role": "development",
+      "task": "exception_policy",
+      "audit_effect": -0.05,
+      "audit_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_effect": 0.0,
+      "full_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.05,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.25
+          ]
+        },
+        "full_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "full_remote": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        }
+      }
+    },
+    {
+      "model": "glm-4.7-flash:q4_K_M",
+      "role": "development",
+      "task": "team_design",
+      "audit_effect": -0.1,
+      "audit_bootstrap_95_ci": [
+        -0.25,
+        0.0
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.05,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.25
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        }
+      }
+    },
+    {
+      "model": "gpt-oss:20b",
+      "role": "development",
+      "task": "work_policy",
+      "audit_effect": -0.45,
+      "audit_bootstrap_95_ci": [
+        -0.65,
+        -0.25
+      ],
+      "full_effect": -0.7,
+      "full_bootstrap_95_ci": [
+        -0.9,
+        -0.5
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.24999999999999994,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.25,
+            0.65
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.7,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.5,
+            0.9
+          ]
+        }
+      }
+    },
+    {
+      "model": "gpt-oss:20b",
+      "role": "development",
+      "task": "office_investment",
+      "audit_effect": -1.0,
+      "audit_bootstrap_95_ci": [
+        -1.15,
+        -0.85
+      ],
+      "full_effect": -0.95,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.85
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.050000000000000044,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.75,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.5
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.1,
+            0.45
+          ]
+        },
+        "full_rto": {
+          "effect": -0.7,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.9,
+            -0.45
+          ]
+        },
+        "full_remote": {
+          "effect": 0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.1,
+            0.45
+          ]
+        }
+      }
+    },
+    {
+      "model": "gpt-oss:20b",
+      "role": "development",
+      "task": "hiring_geography",
+      "audit_effect": -0.8,
+      "audit_bootstrap_95_ci": [
+        -0.95,
+        -0.6
+      ],
+      "full_effect": -0.9,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.75
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.09999999999999998,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.35,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.65,
+            -0.05
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.2,
+            0.7
+          ]
+        },
+        "full_rto": {
+          "effect": -0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.65,
+            -0.25
+          ]
+        },
+        "full_remote": {
+          "effect": 0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.2,
+            0.7
+          ]
+        }
+      }
+    },
+    {
+      "model": "gpt-oss:20b",
+      "role": "development",
+      "task": "performance_policy",
+      "audit_effect": -0.35,
+      "audit_bootstrap_95_ci": [
+        -0.55,
+        -0.15
+      ],
+      "full_effect": -0.2,
+      "full_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.14999999999999997,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.35,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.55,
+            -0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": -0.2,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.4,
+            -0.05
+          ]
+        },
+        "full_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "gpt-oss:20b",
+      "role": "development",
+      "task": "exception_policy",
+      "audit_effect": -0.6,
+      "audit_bootstrap_95_ci": [
+        -0.8,
+        -0.4
+      ],
+      "full_effect": -0.95,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.85
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.35,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.55,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.35,
+            0.75
+          ]
+        },
+        "full_rto": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.75,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "gpt-oss:20b",
+      "role": "development",
+      "task": "team_design",
+      "audit_effect": -0.9,
+      "audit_bootstrap_95_ci": [
+        -1.1,
+        -0.7
+      ],
+      "full_effect": -0.3,
+      "full_bootstrap_95_ci": [
+        -0.5,
+        -0.1
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.6000000000000001,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.25,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.8,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.6,
+            0.95
+          ]
+        },
+        "full_rto": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.25,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.5
+          ]
+        }
+      }
+    },
+    {
+      "model": "olmo-3:7b-instruct-q4_K_M",
+      "role": "development",
+      "task": "work_policy",
+      "audit_effect": -0.95,
+      "audit_bootstrap_95_ci": [
+        -1.0,
+        -0.85
+      ],
+      "full_effect": -0.5,
+      "full_bootstrap_95_ci": [
+        -0.7,
+        -0.3
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.44999999999999996,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -1.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -1.0
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": -1.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -1.0
+          ]
+        },
+        "full_remote": {
+          "effect": -0.5,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.7,
+            -0.3
+          ]
+        }
+      }
+    },
+    {
+      "model": "olmo-3:7b-instruct-q4_K_M",
+      "role": "development",
+      "task": "office_investment",
+      "audit_effect": -0.85,
+      "audit_bootstrap_95_ci": [
+        -1.051249999999999,
+        -0.6
+      ],
+      "full_effect": -1.8,
+      "full_bootstrap_95_ci": [
+        -2.0,
+        -1.55
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.9500000000000001,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.25
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.75,
+            1.0
+          ]
+        },
+        "full_rto": {
+          "effect": -0.95,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.85
+          ]
+        },
+        "full_remote": {
+          "effect": 0.85,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.7,
+            1.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "olmo-3:7b-instruct-q4_K_M",
+      "role": "development",
+      "task": "hiring_geography",
+      "audit_effect": -0.95,
+      "audit_bootstrap_95_ci": [
+        -1.0,
+        -0.85
+      ],
+      "full_effect": -1.0,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -1.0
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.050000000000000044,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.95,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.85
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": -1.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -1.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "olmo-3:7b-instruct-q4_K_M",
+      "role": "development",
+      "task": "performance_policy",
+      "audit_effect": -0.55,
+      "audit_bootstrap_95_ci": [
+        -0.75,
+        -0.35
+      ],
+      "full_effect": -1.2,
+      "full_bootstrap_95_ci": [
+        -1.4,
+        -1.05
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.6499999999999999,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.95,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -1.0,
+            -0.85
+          ]
+        },
+        "audit_remote": {
+          "effect": -0.4,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.6,
+            -0.2
+          ]
+        },
+        "full_rto": {
+          "effect": -1.95,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -2.0,
+            -1.85
+          ]
+        },
+        "full_remote": {
+          "effect": -0.75,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.9,
+            -0.55
+          ]
+        }
+      }
+    },
+    {
+      "model": "olmo-3:7b-instruct-q4_K_M",
+      "role": "development",
+      "task": "exception_policy",
+      "audit_effect": -0.2,
+      "audit_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "full_effect": -0.2,
+      "full_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.0,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.2,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.05,
+            0.4
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.2,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.05,
+            0.4
+          ]
+        }
+      }
+    },
+    {
+      "model": "olmo-3:7b-instruct-q4_K_M",
+      "role": "development",
+      "task": "team_design",
+      "audit_effect": -0.6,
+      "audit_bootstrap_95_ci": [
+        -0.8,
+        -0.4
+      ],
+      "full_effect": -0.25,
+      "full_bootstrap_95_ci": [
+        -0.45,
+        -0.1
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.35,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.65,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.45,
+            0.85
+          ]
+        },
+        "full_rto": {
+          "effect": -0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.25,
+            0.0
+          ]
+        },
+        "full_remote": {
+          "effect": 0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.3
+          ]
+        }
+      }
+    },
+    {
+      "model": "nemotron-3-nano:4b",
+      "role": "development",
+      "task": "work_policy",
+      "audit_effect": -1.0,
+      "audit_bootstrap_95_ci": [
+        -1.0,
+        -1.0
+      ],
+      "full_effect": -0.95,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.85
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.050000000000000044,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.6,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.8,
+            -0.4
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.4,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.2,
+            0.6
+          ]
+        },
+        "full_rto": {
+          "effect": -0.6,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.8,
+            -0.4
+          ]
+        },
+        "full_remote": {
+          "effect": 0.35,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.15,
+            0.55
+          ]
+        }
+      }
+    },
+    {
+      "model": "nemotron-3-nano:4b",
+      "role": "development",
+      "task": "office_investment",
+      "audit_effect": -0.65,
+      "audit_bootstrap_95_ci": [
+        -0.9,
+        -0.4
+      ],
+      "full_effect": -0.8,
+      "full_bootstrap_95_ci": [
+        -1.15,
+        -0.5
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.15000000000000002,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.5,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.8,
+            -0.2
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.3
+          ]
+        },
+        "full_rto": {
+          "effect": -0.65,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.9,
+            -0.4
+          ]
+        },
+        "full_remote": {
+          "effect": 0.15,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.3
+          ]
+        }
+      }
+    },
+    {
+      "model": "nemotron-3-nano:4b",
+      "role": "development",
+      "task": "hiring_geography",
+      "audit_effect": -0.6,
+      "audit_bootstrap_95_ci": [
+        -0.85,
+        -0.35
+      ],
+      "full_effect": -0.55,
+      "full_bootstrap_95_ci": [
+        -0.75,
+        -0.35
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.04999999999999993,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.55,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.8,
+            -0.25
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "full_rto": {
+          "effect": -0.45,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.7,
+            -0.2
+          ]
+        },
+        "full_remote": {
+          "effect": 0.1,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.25
+          ]
+        }
+      }
+    },
+    {
+      "model": "nemotron-3-nano:4b",
+      "role": "development",
+      "task": "performance_policy",
+      "audit_effect": -0.2,
+      "audit_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "full_effect": -0.65,
+      "full_bootstrap_95_ci": [
+        -0.9,
+        -0.4
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.45,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": -0.2,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.4,
+            -0.05
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "full_rto": {
+          "effect": -0.65,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.9,
+            -0.4
+          ]
+        },
+        "full_remote": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    {
+      "model": "nemotron-3-nano:4b",
+      "role": "development",
+      "task": "exception_policy",
+      "audit_effect": -0.05,
+      "audit_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.2,
+        0.1
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.0,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.0
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.15,
+            0.15
+          ]
+        },
+        "full_remote": {
+          "effect": 0.05,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.0,
+            0.15
+          ]
+        }
+      }
+    },
+    {
+      "model": "nemotron-3-nano:4b",
+      "role": "development",
+      "task": "team_design",
+      "audit_effect": -0.9,
+      "audit_bootstrap_95_ci": [
+        -1.1,
+        -0.65
+      ],
+      "full_effect": -0.9,
+      "full_bootstrap_95_ci": [
+        -1.0,
+        -0.75
+      ],
+      "n_audit_pairs": 20,
+      "n_full_pairs": 20,
+      "absolute_error": 0.0,
+      "shifts_from_no_feed": {
+        "audit_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.25,
+            0.3
+          ]
+        },
+        "audit_remote": {
+          "effect": 0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.7,
+            1.1
+          ]
+        },
+        "full_rto": {
+          "effect": 0.0,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            -0.2,
+            0.2
+          ]
+        },
+        "full_remote": {
+          "effect": 0.9,
+          "n_pairs": 20,
+          "bootstrap_95_ci": [
+            0.75,
+            1.0
+          ]
+        }
+      }
+    }
+  ],
+  "guardrails": {
+    "primary_requires_all_holdout_pairs": 20,
+    "secondary_cannot_rescue_failed_primary": true,
+    "audit_and_full_posts_must_be_disjoint": true
+  }
+}

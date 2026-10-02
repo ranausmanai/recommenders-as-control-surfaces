@@ -1,0 +1,355 @@
+{
+  "analysis_version": 1,
+  "records": 300,
+  "decision_labels": 1800,
+  "audit_full_prediction": {
+    "spearman_rho": 0.9509100197414352,
+    "permutation_p_one_sided": 0.0002599974000259997,
+    "validates": true
+  },
+  "significant_full_cells_holm": 0,
+  "cells": [
+    {
+      "model": "gpt-5.6-sol",
+      "task": "work_policy",
+      "audit_effect": -0.2,
+      "audit_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "full_effect": 0.0,
+      "full_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.0,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "task": "office_investment",
+      "audit_effect": -0.25,
+      "audit_bootstrap_95_ci": [
+        -0.45,
+        -0.1
+      ],
+      "full_effect": 0.0,
+      "full_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.0,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "task": "hiring_geography",
+      "audit_effect": -0.45,
+      "audit_bootstrap_95_ci": [
+        -0.65,
+        -0.25
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "task": "performance_policy",
+      "audit_effect": -0.7,
+      "audit_bootstrap_95_ci": [
+        -0.9,
+        -0.5
+      ],
+      "full_effect": -0.4,
+      "full_bootstrap_95_ci": [
+        -0.6,
+        -0.2
+      ],
+      "full_p_raw": 0.008249917500824992,
+      "full_rto_from_no_evidence": 0.25,
+      "full_remote_from_no_evidence": 0.65,
+      "full_p_holm": 0.14849851501484984,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "task": "exception_policy",
+      "audit_effect": -0.2,
+      "audit_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "full_effect": 0.0,
+      "full_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.0,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-sol",
+      "task": "team_design",
+      "audit_effect": -0.2,
+      "audit_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "full_effect": 0.0,
+      "full_bootstrap_95_ci": [
+        0.0,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.0,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "task": "work_policy",
+      "audit_effect": -0.5,
+      "audit_bootstrap_95_ci": [
+        -0.7,
+        -0.3
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "task": "office_investment",
+      "audit_effect": -0.5,
+      "audit_bootstrap_95_ci": [
+        -0.7,
+        -0.3
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "task": "hiring_geography",
+      "audit_effect": -0.5,
+      "audit_bootstrap_95_ci": [
+        -0.7,
+        -0.3
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "task": "performance_policy",
+      "audit_effect": -0.25,
+      "audit_bootstrap_95_ci": [
+        -0.5,
+        0.0
+      ],
+      "full_effect": 0.0,
+      "full_bootstrap_95_ci": [
+        -0.2,
+        0.2
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": -0.05,
+      "full_remote_from_no_evidence": -0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "task": "exception_policy",
+      "audit_effect": -0.5,
+      "audit_bootstrap_95_ci": [
+        -0.7,
+        -0.3
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-terra",
+      "task": "team_design",
+      "audit_effect": -0.5,
+      "audit_bootstrap_95_ci": [
+        -0.7,
+        -0.3
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "task": "work_policy",
+      "audit_effect": -0.65,
+      "audit_bootstrap_95_ci": [
+        -0.85,
+        -0.45
+      ],
+      "full_effect": -0.05,
+      "full_bootstrap_95_ci": [
+        -0.15,
+        0.0
+      ],
+      "full_p_raw": 1.0,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.05,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "task": "office_investment",
+      "audit_effect": -0.65,
+      "audit_bootstrap_95_ci": [
+        -0.85,
+        -0.45
+      ],
+      "full_effect": -0.15,
+      "full_bootstrap_95_ci": [
+        -0.3,
+        0.0
+      ],
+      "full_p_raw": 0.25040749592504075,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.15,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "task": "hiring_geography",
+      "audit_effect": -0.75,
+      "audit_bootstrap_95_ci": [
+        -0.9,
+        -0.55
+      ],
+      "full_effect": -0.2,
+      "full_bootstrap_95_ci": [
+        -0.4,
+        -0.05
+      ],
+      "full_p_raw": 0.12590874091259088,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.2,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "task": "performance_policy",
+      "audit_effect": -0.7,
+      "audit_bootstrap_95_ci": [
+        -0.9,
+        -0.5
+      ],
+      "full_effect": -0.4,
+      "full_bootstrap_95_ci": [
+        -0.65,
+        -0.15
+      ],
+      "full_p_raw": 0.021489785102148978,
+      "full_rto_from_no_evidence": 0.1,
+      "full_remote_from_no_evidence": 0.5,
+      "full_p_holm": 0.36532634673653264,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "task": "exception_policy",
+      "audit_effect": -0.65,
+      "audit_bootstrap_95_ci": [
+        -0.85,
+        -0.45
+      ],
+      "full_effect": -0.1,
+      "full_bootstrap_95_ci": [
+        -0.25,
+        0.0
+      ],
+      "full_p_raw": 0.4996750032499675,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.1,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "task": "team_design",
+      "audit_effect": -0.65,
+      "audit_bootstrap_95_ci": [
+        -0.85,
+        -0.45
+      ],
+      "full_effect": -0.1,
+      "full_bootstrap_95_ci": [
+        -0.25,
+        0.0
+      ],
+      "full_p_raw": 0.5001049989500105,
+      "full_rto_from_no_evidence": 0.0,
+      "full_remote_from_no_evidence": 0.1,
+      "full_p_holm": 1.0,
+      "full_reject_holm_005": false
+    }
+  ]
+}

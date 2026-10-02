@@ -1,0 +1,30 @@
+{
+  "created_unix": 1785237999.270834,
+  "design": {
+    "models": [
+      "gpt-5.6-sol",
+      "gpt-5.6-terra",
+      "gpt-5.6-luna"
+    ],
+    "conditions": [
+      "no_evidence",
+      "audit_rto",
+      "audit_remote",
+      "full_rto",
+      "full_remote"
+    ],
+    "replicates": 20,
+    "calls": 300,
+    "decision_labels": 1800,
+    "codex_version": "codex-cli 0.145.0-alpha.30",
+    "codex_binary": "/Applications/ChatGPT.app/Contents/Resources/codex",
+    "hashes": {
+      "preregistration": "cc1ca057fd05b32c0bf9c404a9d198edae69ac4725d1452aeb3c01b1591ffbb6",
+      "schema": "87225f85ba8b4371c21a28c17315ed41f101523394a84b012260a2ace7f1aac9",
+      "runner": "a538643d838148e85c4d874751dffabc108fefffac0c4724fd9ad0dd482967d4",
+      "queue": "9316a5b372f27255ba75ea0e96c4b2318cc69716390b412c35ab99d7a2e6d378",
+      "analysis": "004aaad316ffa35a72a1ca35c47ec562a29033b37630fe2329449a4f4c83b350",
+      "matched_pool": "9cd2613879298e86e40cdb3fc2fbe457c277bf2e6343e6f410e1617c6bb14520"
+    }
+  }
+}

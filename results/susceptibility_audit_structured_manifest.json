@@ -1,0 +1,18 @@
+{
+  "created_unix": 1785186271.4649618,
+  "design": {
+    "job_count": 700,
+    "n_per_cell": 20,
+    "decision_count": 4200,
+    "uniform_structured_decoding": true,
+    "base_record_count": 629,
+    "hashes": {
+      "amendment": "99df3add433c096cb62c4c942096a62939d77fad8b5adf7d2c5cc5bce0d2c9c7",
+      "structured_runner": "f1045098cfc48d86bbccc8da2a5c668a90092cd7ab0b78c8d98c2eafe7fb9093",
+      "queue": "a816b798faf36aa4012e47314a54aa9f1fdb081af642b450a78a4afec095c235",
+      "original_runner": "8f159c9995536f53b55fa9ffae10c714f7f56bbae275df5bb29897511672fee4",
+      "analysis": "11a20c8e3fa887f0f395b23630fef23ea107c9f90ba2bbec161fa985864b4dfe",
+      "base_snapshot": "f46ed11f142d05f459b7603d174dbc732d4c6789eaa6057c9b2c26323663237c"
+    }
+  }
+}
